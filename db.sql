@@ -2,7 +2,7 @@
 
 CREATE TABLE
     users (
-        id BIGSERIAL PRIMARY KEY NOT NULL,
+        id UUID PRIMARY KEY NOT NULL,
         username VARCHAR(255) NOT NULL,
         email VARCHAR(255) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
@@ -12,9 +12,9 @@ CREATE TABLE
 
 CREATE TABLE
     posts (
-        id BIGSERIAL NOT NULL PRIMARY KEY,
+        id UUID NOT NULL PRIMARY KEY,
         author VARCHAR(100) NOT NULL,
-        author_id BIGINT REFERENCES users(id) NOT NULL,
+        author_id UUID REFERENCES users(id) NOT NULL,
         title VARCHAR(255) NOT NULL,
         summary TEXT NOT NULL,
         body TEXT NOT NULL,

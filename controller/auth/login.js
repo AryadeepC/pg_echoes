@@ -1,6 +1,6 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../../config.env") });
-const { userModel } = require("../../models/User");
+const { pool } = require("../../config/db");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { Err } = require("../../utils/ErrorResponse");
@@ -15,15 +15,16 @@ const login = async (req, res) => {
   }
 
   try {
-    const extUser = await userModel.findOne({ email });
-    console.log(extUser);
-    if (!extUser) {
+    let extUser = await pool.query(`SELECT * FROM users WHERE email = $1 LIMIT 1`, [email]);
+    console.log("user in db:", extUser.rows[0].username);
+    if (!extUser.rowCount) {
       return Err(req, res, "User not found. Try registering first.");
     }
+    extUser = extUser.rows[0];
 
     const isMatch = await bcrypt.compare(password, extUser.password);
     const token = jwt.sign(
-      { id: extUser._id, name: extUser.username },
+      { id: extUser.id, name: extUser.username },
       process.env.JWT_SECRET
     );
 
@@ -37,7 +38,7 @@ const login = async (req, res) => {
       secure: true,
     });
     console.log("LOGIN SUCCESSFUL ✅");
-    
+
     return res.send({
       status: "ok",
       message: "Login successful",

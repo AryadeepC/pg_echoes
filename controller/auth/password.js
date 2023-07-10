@@ -1,16 +1,16 @@
 require("dotenv").config({ path: __dirname + "../../config.env" });
-const { userModel } = require("../../models/User");
+const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 const { transporter, mailBody, uid } = require("../../utils/sendEmail");
 const bcrypt = require("bcryptjs");
 
 const forgotPassword = async (req, res) => {
   try {
-    const foundUser = await userModel.findById(req.userId);
-    if (!foundUser) {
+    const foundUser = await pool.query(`SELECT * FROM users WHERE id = $1 LIMIT 1`, [req.userId]);
+    if (!foundUser.rowCount) {
       return Err(req, res, "User not found");
     }
-    const userEmail = foundUser.email;
+    const userEmail = foundUser.rows[0].email;
 
     let mailOptions = {
       from: `Echoes <${process.env.TRANSPORT_USER}>`,
@@ -20,15 +20,16 @@ const forgotPassword = async (req, res) => {
     };
 
     const otp = await bcrypt.hash(uid, 8);
-    const userWithCode = await userModel.findByIdAndUpdate(
-      req.userId,
-      {
-        resetPasswordToken: otp,
-        resetPasswordExpiry: Date.now() + 2 * 60 * 1000,
-      },
-      { new: true }
-    );
-    console.log("hashed verif code=", userWithCode.resetPasswordToken);
+    // const userWithCode = await userModel.findByIdAndUpdate(
+    //   req.userId,
+    //   {
+    //     resetPasswordToken: otp,
+    //     resetPasswordExpiry: Date.now() + 2 * 60 * 1000,
+    //   },
+    //   { new: true }
+    // );
+    const userWithCode = await pool.query('UPDATE users SET (reset_password_token,reset_password_expiry) VALUES ($1,$2) RETURNING *;', [otp, Date.now() + 2 * 60 * 1000])
+    console.log("hashed verif code=", userWithCode.rows[0].reset_password_token);
 
     const emailResponse = await transporter.sendMail(mailOptions);
     console.log("emails", emailResponse.accepted);

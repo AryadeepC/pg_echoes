@@ -1,7 +1,8 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../../config.env") });
 const jwt = require("jsonwebtoken");
-const { userModel } = require("../../models/User");
+const { pool } = require("../../config/db");
+const { Err } = require("../../utils/ErrorResponse");
 
 const veriftJwt = async (req, res) => {
   const { userToken } = req.cookies;
@@ -13,11 +14,10 @@ const veriftJwt = async (req, res) => {
     console.log("decoded stuff", decoded);
 
     if (decoded.id) {
-      const extUser = await userModel
-        .findOne({ _id: decoded.id })
-        .select(["_id", "username"]);
-
+      let extUser = await pool.query('SELECT id, username FROM users WHERE id = $1;', [decoded.id])
+      extUser = extUser.rows[0];
       console.log("name from db:", extUser.username);
+      
       if (!extUser) {
         return Err(req, res, "User not found in db while verifying");
       }
