@@ -5,8 +5,8 @@ const fetchAll = async (req, res) => {
   console.log("FETCHING ALL");
   try {
     // const postPool = await postModel.find().sort({ createdAt: "descending" });
-    const postPool = await pool.query('SELECT * FROM posts ORDER BY createdAt DESC;');
-    console.log("total posts=", postPool.rowCount, '\n', postPool.rows);
+    const postPool = await pool.query('SELECT * FROM posts ORDER BY created_at DESC;');
+    console.log("total posts=", postPool.rowCount);
     return res.send({
       status: "ok",
       message: "fetching all posts",
@@ -41,7 +41,7 @@ const getUserPosts = async (req, res) => {
   console.log(req.userId, req.userName);
   try {
     // const extUserPosts = await userModel.findById(req.userId).populate("posts");
-    const extUserPosts = await pool.query('SELECT * FROM posts WHERE author_id = $1 ORDER BY createdAt DESC;', [req.userId]);;
+    const extUserPosts = await pool.query('SELECT * FROM posts WHERE author_id = $1 ORDER BY created_at DESC;', [req.userId]);;
     console.log(extUserPosts.rowCount);
     let arr = extUserPosts.rows;
     return res.send({ status: "ok", posts: arr });

@@ -38,7 +38,7 @@ const create = async (req, res) => {
       }
     }
 
-    let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, createdAt,updatedAt) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date()]);
+    let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, created_at, updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date()]);
 
     if (postObj.rowCount > 0) {
       postObj = postObj.rows[0];
