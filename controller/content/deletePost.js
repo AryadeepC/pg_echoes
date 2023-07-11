@@ -10,7 +10,7 @@ const deletePost = async (req, res) => {
     if (!neededPost) {
       return Err(req, res, "Post does not exist");
     }
-    console.log(neededPost.author, neededPost.authorDetails);
+    console.log(neededPost.author, neededPost.author_id);
     const postAuthor = await userModel.findById(neededPost.authorDetails);
     if (!postAuthor) {
       return Err(req, res, "User not found while deleting post");

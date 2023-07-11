@@ -16,15 +16,11 @@ const profilePage = async (req, res) => {
 
     console.log("profile", userInDb.rows[0]);
 
-    // const { rowCount, rows } = await pool.query('SELECT * FROM posts;');
-    // const { rowCount, rows } = await pool.query('SELECT COALESCE(SUM(views),0) AS views,COUNT(*) as posts FROM posts WHERE author_id = $1;'[id]);
-    // if (rowCount > 0) {
-    //   console.log(userStats);
-    //   view = rows[0].sum;
-    //   view = rows[0].count;
-    // }
-    const stats = await pool.query('SELECT COALESCE(SUM(views),0) AS views FROM posts WHERE author_id = $1;'[id]);
-    console.log("Please", stats)
+    const { rowCount, rows } = await pool.query('SELECT SUM(views) AS views,COUNT(*) as posts FROM posts WHERE author_id = $1;', [id]);
+    if (rowCount > 0) {
+      view = rows[0].views;
+      posts = rows[0].posts;
+    }
 
     console.log("Views:", view, "| Posts:", posts);
     return res.send({

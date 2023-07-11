@@ -20,15 +20,8 @@ const forgotPassword = async (req, res) => {
     };
 
     const otp = await bcrypt.hash(uid, 8);
-    // const userWithCode = await userModel.findByIdAndUpdate(
-    //   req.userId,
-    //   {
-    //     resetPasswordToken: otp,
-    //     resetPasswordExpiry: Date.now() + 2 * 60 * 1000,
-    //   },
-    //   { new: true }
-    // );
-    const userWithCode = await pool.query('UPDATE users SET (reset_password_token,reset_password_expiry) VALUES ($1,$2) RETURNING *;', [otp, Date.now() + 2 * 60 * 1000])
+
+    const userWithCode = await pool.query('UPDATE users SET reset_password_token = $1,reset_password_expiry = $2 WHERE id = $3 RETURNING *;', [otp, Date.now() + 2 * 60 * 1000, req.userId])
     console.log("hashed verif code=", userWithCode.rows[0].reset_password_token);
 
     const emailResponse = await transporter.sendMail(mailOptions);

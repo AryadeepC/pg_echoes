@@ -4,7 +4,6 @@ const { Err } = require("../../utils/ErrorResponse");
 const fetchAll = async (req, res) => {
   console.log("FETCHING ALL");
   try {
-    // const postPool = await postModel.find().sort({ createdAt: "descending" });
     const postPool = await pool.query('SELECT * FROM posts ORDER BY created_at DESC;');
     console.log("total posts=", postPool.rowCount);
     return res.send({
@@ -22,7 +21,7 @@ const fetchSingle = async (req, res) => {
   console.log("Fetching one");
   try {
     const singlePost = await pool.query('SELECT * FROM posts WHERE id = $1;', [id]);
-    console.log(singlePost.rows[0].title);
+    console.log("SINGLE POST:TITLE=",singlePost.rows[0].title);
 
     return res.send({
       status: "ok",
@@ -40,9 +39,8 @@ const getUserPosts = async (req, res) => {
   }
   console.log(req.userId, req.userName);
   try {
-    // const extUserPosts = await userModel.findById(req.userId).populate("posts");
-    const extUserPosts = await pool.query('SELECT * FROM posts WHERE author_id = $1 ORDER BY created_at DESC;', [req.userId]);;
-    console.log(extUserPosts.rowCount);
+    const extUserPosts = await pool.query('SELECT * FROM posts WHERE author_id = $1 ORDER BY created_at DESC;', [req.userId]);
+    console.log("TOTAL USER'S POST=", extUserPosts.rowCount);
     let arr = extUserPosts.rows;
     return res.send({ status: "ok", posts: arr });
   } catch (error) {
