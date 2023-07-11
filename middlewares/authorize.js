@@ -13,6 +13,8 @@ const authorize = (req, res, next) => {
   try {
     const decoded = jwt.verify(userToken, process.env.JWT_SECRET);
     console.log("decoded stuff", decoded);
+    if(!decoded.id || !decoded.name)
+      return Err(req, res, "JWT Tampered !!");
     req.userId = decoded.id;
     req.userName = decoded.name;
     next();

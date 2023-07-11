@@ -1,6 +1,5 @@
 const path = require("path");
-const { postModel } = require("../../models/Post");
-const { userModel } = require("../../models/User");
+const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 const fs = require("fs");
 

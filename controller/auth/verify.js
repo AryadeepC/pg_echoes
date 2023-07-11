@@ -26,7 +26,7 @@ const veriftJwt = async (req, res) => {
         status: "ok",
         message: "User verified",
         username: extUser.username,
-        userid: extUser._id,
+        userid: extUser.id,
       });
     }
     return Err(req, res, "Invalid/tampered user token");

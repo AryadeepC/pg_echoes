@@ -20,8 +20,8 @@ CREATE TABLE
         body TEXT NOT NULL,
         cover VARCHAR(1000),
         views INT DEFAULT 0,
-        createdAt TIMESTAMPTZ NOT NULL,
-        updatedAt TIMESTAMPTZ NOT NULL
+        createdAt TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updatedAt TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
 
 INSERT INTO

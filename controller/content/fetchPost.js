@@ -1,4 +1,3 @@
-// const { postModel } = require("../../models/Post");
 const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 
@@ -7,7 +6,7 @@ const fetchAll = async (req, res) => {
   try {
     // const postPool = await postModel.find().sort({ createdAt: "descending" });
     const postPool = await pool.query('SELECT * FROM posts ORDER BY createdAt DESC;');
-    console.log(postPool.rowCount);
+    console.log("total posts=", postPool.rowCount, '\n', postPool.rows);
     return res.send({
       status: "ok",
       message: "fetching all posts",

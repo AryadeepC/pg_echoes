@@ -1,4 +1,4 @@
-const { postModel } = require("../../models/Post");
+const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 
 const addView = async (req, res) => {

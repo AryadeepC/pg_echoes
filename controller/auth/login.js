@@ -23,14 +23,15 @@ const login = async (req, res) => {
     extUser = extUser.rows[0];
 
     const isMatch = await bcrypt.compare(password, extUser.password);
+    if (!isMatch) {
+      return Err(req, res, "Credentials mismatch");
+    }
+
     const token = jwt.sign(
       { id: extUser.id, name: extUser.username },
       process.env.JWT_SECRET
     );
 
-    if (!isMatch) {
-      return Err(req, res, "Credentials mismatch");
-    }
 
     res.cookie("userToken", token, {
       httpOnly: true,

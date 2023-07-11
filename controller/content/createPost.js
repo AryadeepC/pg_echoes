@@ -1,7 +1,7 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../../config.env") });
-const { postModel } = require("../../models/Post");
-const { userModel } = require("../../models/User");
+const crypto = require("crypto");
+const { pool } = require("../../config/db");
 const jwt = require("jsonwebtoken");
 const { Err } = require("../../utils/ErrorResponse");
 
@@ -21,15 +21,15 @@ const create = async (req, res) => {
     if (!decoded.id) {
       return Err(req, res, "Token invalid. Missing id!");
     }
-    const dbUser = await userModel
-      .findOne({ _id: decoded.id })
-      .select(["username"]);
-    console.log("author:", decoded.name);
+    // const dbUser = await userModel
+    //   .findOne({ _id: decoded.id })
+    //   .select(["username"]);
+    // console.log("author:", decoded.name);
 
-    if (!dbUser || dbUser.username !== decoded.name) {
-      return Err(req, res, "Token tampered. User doesn't exist/match");
-    }
-    
+    // if (!dbUser || dbUser.username !== decoded.name) {
+    //   return Err(req, res, "Token tampered. User doesn't exist/match");
+    // }
+
     if (req.file) {
       const { filename } = req.file;
       if (filename) {
@@ -38,24 +38,14 @@ const create = async (req, res) => {
       }
     }
 
-    const postObj = await postModel.create({
-      title,
-      summary,
-      body,
-      author: decoded.name,
-      authorDetails: decoded.id,
-      cover,
-    });
-    console.log("whole post:", postObj);
-    if (postObj._id) {
-      const updUser = await userModel.findOneAndUpdate(
-        { _id: decoded.id },
-        { $push: { posts: postObj._id } },
-        { new: true }
-      );
-      console.log("post added to user", updUser);
+    let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, createdAt,updatedAt) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date()]);
+
+    if (postObj.rowCount > 0) {
+      postObj = postObj.rows[0];
     }
-    return res.send({ status: "ok", message: "posted", id: postObj._id });
+
+    console.log("whole post:", postObj);
+    return res.send({ status: "ok", message: "posted", id: postObj.id });
   } catch (error) {
     return Err(req, res, error.message);
   }
