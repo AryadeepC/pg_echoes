@@ -2,7 +2,7 @@ const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 
 const fetchAll = async (req, res) => {
-  console.log("FETCHING ALL");
+  // console.log("FETCHING ALL");
   try {
     const postPool = await pool.query('SELECT * FROM posts ORDER BY created_at DESC;');
     console.log("total posts=", postPool.rowCount);
@@ -18,7 +18,7 @@ const fetchAll = async (req, res) => {
 
 const fetchSingle = async (req, res) => {
   const { id } = req.params;
-  console.log("Fetching one");
+  // console.log("Fetching one");
   try {
     const singlePost = await pool.query('SELECT * FROM posts WHERE id = $1;', [id]);
     console.log("SINGLE POST:TITLE=",singlePost.rows[0].title);

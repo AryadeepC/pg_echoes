@@ -4,16 +4,13 @@ const { Err } = require("../../utils/ErrorResponse");
 const addView = async (req, res) => {
   const postId = req.params.id;
   try {
-    const post = await postModel.findById(postId);
-    if (!post) {
+    const post = await pool.query('UPDATE posts SET views = views + 1 WHERE id = $1', [postId])
+    if (!post.rowCount) {
       res.sendStatus(404);
       return;
     }
-    const currentViewCount = post.views;
-    const newViewCount = currentViewCount + 1;
-    post.views = newViewCount;
-    await post.save();
     res.sendStatus(200);
+    res.end();
   } catch (err) {
     console.error("error while adding view", err);
     res.sendStatus(500);

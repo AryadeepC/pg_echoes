@@ -21,14 +21,8 @@ const create = async (req, res) => {
     if (!decoded.id) {
       return Err(req, res, "Token invalid. Missing id!");
     }
-    // const dbUser = await userModel
-    //   .findOne({ _id: decoded.id })
-    //   .select(["username"]);
-    // console.log("author:", decoded.name);
 
-    // if (!dbUser || dbUser.username !== decoded.name) {
-    //   return Err(req, res, "Token tampered. User doesn't exist/match");
-    // }
+    
 
     if (req.file) {
       const { filename } = req.file;
