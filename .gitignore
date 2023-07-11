@@ -1,5 +1,6 @@
 /node_modules
 config.env
+old_config.env
 utils/test_jwt.js
 utils/test.js
 public/uploads/

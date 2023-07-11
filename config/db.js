@@ -2,12 +2,16 @@ const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../config.env") });
 const { Pool } = require('pg')
 
+// const pool = new Pool({
+//   host: process.env.POSTGRES_HOST,
+//   user: process.env.POSTGRES_USER,
+//   password: process.env.POSTGRES_PASSWORD,
+//   port: process.env.POSTGRES_PORT,
+//   database: process.env.POSTGRES_DB,
+// })
+
 const pool = new Pool({
-  host: process.env.POSTGRES_HOST,
-  user: process.env.POSTGRES_USER,
-  password: process.env.POSTGRES_PASSWORD,
-  port: process.env.POSTGRES_PORT,
-  database: process.env.POSTGRES_DB,
+  connectionString: process.env.POSTGRES_URL + "?sslmode=require",
 })
 
 const poolAlive = async () => {
