@@ -22,8 +22,6 @@ const create = async (req, res) => {
       return Err(req, res, "Token invalid. Missing id!");
     }
 
-    
-
     if (req.file) {
       const { filename } = req.file;
       if (filename) {

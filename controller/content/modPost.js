@@ -21,36 +21,27 @@ const updPosts = async (req, res) => {
   const postId = req.params.id;
   const { title, summary, body, emptyPic } = req.body;
   let cover = "";
+  console.log("UPDATING=", postId, !!title);
+  
+  if (req.file) {
+    console.log("file updated=", req.file.filename);
+    const { filename } = req.file;
+    if (filename) {
+      cover = "/uploads/" + filename;
+      console.log("cover=", cover);
+    }
+  }
+  if (emptyPic === "true") {
+    cover = "";
+  }
 
   try {
-    const post = await postModel.findById(postId);
-    if (!post) {
-      return Err(req, res, "Post not found in update");
+    const post = await pool.query('UPDATE posts SET title = $1, summary = $2, body = $3, cover = $4, updated_at = $5 WHERE id = $6 RETURNING *;', [title, summary, body, cover, new Date(), postId])
+    if (!post.rowCount) {
+      return Err(req, res, "POST UPDATION FAILED!!");
     }
-
-    if (req.file) {
-      console.log("file in update", req.file.filename);
-      const { filename } = req.file;
-      if (filename) {
-        cover = "/uploads/" + filename;
-        console.log("cover", cover);
-      }
-    }
-
-    post.title = title;
-    post.summary = summary;
-    post.body = body;
-    if (req.file) {
-      post.cover = cover;
-    }
-
-    if (emptyPic === "true") {
-      post.cover = "";
-    }
-
-    const neoPost = await post.save();
-    console.log(neoPost);
-    return res.send({ status: "ok", message: "updated post", id: post._id });
+    console.log("UPDATED POST=", post.rows[0]);
+    return res.send({ status: "ok", message: "updated post", id: post.rows[0].id });
   } catch (err) {
     return Err(req, res, "Error while updating post" + err.message);
   }
