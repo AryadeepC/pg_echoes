@@ -4,9 +4,6 @@ const { Err } = require("../../utils/ErrorResponse");
 const { transporter, mailBody, uid } = require("../../utils/sendEmail");
 const bcrypt = require("bcryptjs");
 
-bcrypt.compare("e55106", "$2a$08$O2cC9rnZMrSlp2Kq4K3dj.w2Myw5HIcQF/j7vtkOVlZo12YmYdNCC").then(res => {
-  console.log(res);
-}).catch(err => console.error(err.message));
 
 const forgotPassword = async (req, res) => {
   try {
@@ -75,7 +72,5 @@ const resetPassword = async (req, res) => {
     return Err(req, res, error.message);
   }
 };
-
-
 
 module.exports = { forgotPassword, resetPassword };

@@ -1,5 +1,5 @@
 const appRouter = require("express").Router();
-const postRouter = require("./routes/postRouter");
+const contentRouter = require("./routes/contentRouter");
 const authRouter = require("./routes/authRouter");
 // const getRouter = require("./routes/getRouter");
 
@@ -12,7 +12,7 @@ appRouter.get("/", (req, res) => {
 });
 
 appRouter.use("/user", authRouter);
-appRouter.use("/post", postRouter);
+appRouter.use("/post", contentRouter);
 appRouter.use("*", (req, res) => res.render("404.ejs"));
 
 module.exports = appRouter;
