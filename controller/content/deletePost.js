@@ -7,11 +7,12 @@ const deletePost = async (req, res) => {
   const postId = req.params.id;
   try {
     let neededPost = await pool.query('SELECT * FROM posts WHERE id = $1', [postId])
+
     if (!neededPost.rowCount) {
       return Err(req, res, "Post does not exist");
     }
     neededPost = neededPost.rows[0];
-    console.log("POST(TO BE DELETED) AUTHOR=", neededPost.author);
+    console.log("POST(TO BE DELETED) TITLE=", neededPost.title);
 
     let filePath = path.join(__dirname, "../../public", neededPost.cover);
     // console.log("img path=", filePath);
