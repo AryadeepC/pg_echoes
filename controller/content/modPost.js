@@ -18,29 +18,35 @@ const addView = async (req, res) => {
 };
 
 const updPosts = async (req, res) => {
+  // console.log(req.body.emptyPic, typeof req.body.emptyPic, !!req.file)
   const postId = req.params.id;
   const { title, summary, body, emptyPic } = req.body;
   let cover = "";
   console.log("UPDATING=", postId, !!title);
-  
+
   if (req.file) {
     console.log("file updated=", req.file.filename);
     const { filename } = req.file;
     if (filename) {
       cover = "/uploads/" + filename;
-      console.log("cover=", cover);
     }
   }
   if (emptyPic === "true") {
-    cover = "";
+    cover = null;
   }
+  console.log("cover=", cover);
 
   try {
-    const post = await pool.query('UPDATE posts SET title = $1, summary = $2, body = $3, cover = $4, updated_at = $5 WHERE id = $6 RETURNING *;', [title, summary, body, cover, new Date(), postId])
+    const post = await pool.query('UPDATE posts SET title = $1, summary = $2, body = $3, updated_at = $4 WHERE id = $5 RETURNING *;', [title, summary, body, new Date(), postId])
     if (!post.rowCount) {
       return Err(req, res, "POST UPDATION FAILED!!");
     }
-    console.log("UPDATED POST=", post.rows[0]);
+    if (cover || cover == null) {
+      const coverChange = await pool.query('UPDATE posts SET cover = $1 WHERE id = $2 RETURNING *;', [cover, postId])
+      if (!coverChange.rowCount)
+        return Err(req, res, "COVER PHOTO UPDATION FAILED!!");
+    }
+    console.log("UPDATED POST=", post.rows[0].id);
     return res.send({ status: "ok", message: "updated post", id: post.rows[0].id });
   } catch (err) {
     return Err(req, res, "Error while updating post" + err.message);
