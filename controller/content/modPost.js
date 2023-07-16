@@ -39,7 +39,7 @@ const updPosts = async (req, res) => {
   try {
     const post = await pool.query('UPDATE posts SET title = $1, summary = $2, body = $3, updated_at = $4 WHERE id = $5 RETURNING *;', [title, summary, body, new Date(), postId])
     if (!post.rowCount) {
-      return Err(req, res, "POST UPDATION FAILED!!");x``
+      return Err(req, res, "POST UPDATION FAILED!!");
     }
     if (cover || cover == null) {
       const coverChange = await pool.query('UPDATE posts SET cover = $1 WHERE id = $2 RETURNING *;', [cover, postId])
