@@ -39,6 +39,7 @@ const create = async (req, res) => {
     console.log("whole post:", postObj);
     return res.send({ status: "ok", message: "posted", id: postObj.id });
   } catch (error) {
+    // console.error(error)
     return Err(req, res, error.message);
   }
 
