@@ -1,5 +1,6 @@
 const multer = require("multer");
 const path = require("path");
+require("dotenv").config({ path: path.join(__dirname, "../config.env") });
 const multerS3 = require("multer-s3");
 const { S3Client } = require("@aws-sdk/client-s3");
 
