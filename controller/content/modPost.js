@@ -32,7 +32,7 @@ const updPosts = async (req, res) => {
     console.log("file updated=", req.file.filename);
     const { filename } = req.file;
     if (filename) {
-      cover = "/uploads/" + String(Date.now()) + filename;
+      cover = "/uploads/" + filename;
     }
   }
   if (emptyPic === "true") {
