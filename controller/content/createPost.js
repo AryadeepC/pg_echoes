@@ -23,11 +23,8 @@ const create = async (req, res) => {
     }
 
     if (req.file) {
-      const { filename } = req.file;
-      if (filename) {
-        cover = "/uploads/" + String(Date.now()) + filename;
-        console.log("cover", cover);
-      }
+      cover = req.file.location;
+      console.log("cover", cover);  
     }
 
     let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, created_at, updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date()]);
