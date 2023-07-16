@@ -1,6 +1,6 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "config.env") });
-require("console-stamp")(console, "[HH:MM:ss.l]");
+// require("console-stamp")(console, "[HH:MM:ss.l]");
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
