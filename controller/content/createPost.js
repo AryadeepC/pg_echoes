@@ -25,7 +25,7 @@ const create = async (req, res) => {
     if (req.file) {
       const { filename } = req.file;
       if (filename) {
-        cover = "/uploads/" + filename;
+        cover = "/uploads/" + String(Date.now()) + filename;
         console.log("cover", cover);
       }
     }
