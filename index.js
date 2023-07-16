@@ -8,7 +8,8 @@ const cors = require("cors");
 const router = require("./routes.js");
 const { pool, poolAlive } = require("./config/db.js");
 
-app.use(express.static(path.join(__dirname, "/public")));
+app.use(express.static("/public"));
+// app.use(express.static(path.join(__dirname, "/public")));
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
@@ -19,5 +20,5 @@ poolAlive();
 // const val = pool.query(`SELECT * FROM users;`).then(val => console.log(val.rows));
 
 app.listen(process.env.PORT || 8000, () => {
-  console.log("server=http://localhost:" + process.env.PORT);
+  console.log("server=https://echoes-api.onrender.com");
 });
