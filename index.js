@@ -8,8 +8,8 @@ const cors = require("cors");
 const router = require("./routes.js");
 const { pool, poolAlive } = require("./config/db.js");
 
-app.use(express.static("/public"));
-// app.use(express.static(path.join(__dirname, "/public")));
+// app.use(express.static("/public"));
+app.use(express.static(path.join(__dirname, "/public")));
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
