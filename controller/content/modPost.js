@@ -1,5 +1,6 @@
 const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
+const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage")
 
 const addView = async (req, res) => {
   const postId = req.params.id;
@@ -18,6 +19,7 @@ const addView = async (req, res) => {
 };
 
 const updPosts = async (req, res) => {
+  const storage = getStorage();
   // console.log(req.body.emptyPic, typeof req.body.emptyPic, !!req.file)
   const postId = req.params.id;
   const { title, summary, body, emptyPic } = req.body;
@@ -29,11 +31,18 @@ const updPosts = async (req, res) => {
   //   console.log("file updated=", cover);
   // }
   if (req.file) {
-    console.log("file updated=", req.file.filename);
-    const { filename } = req.file;
-    if (filename) {
-      cover = "/uploads/" + filename;
+    // console.log("file updated=", req.file.filename);
+    // const { filename } = req.file;
+    // if (filename) {
+    //   cover = "/uploads/" + filename;
+    // }
+    const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
+    const metadata = {
+      contentType: req.file.mimetype,
     }
+    const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
+    cover = await getDownloadURL(snapshot.ref)
+    // console.log("cover=", cover);
   }
   if (emptyPic === "true") {
     cover = null;
