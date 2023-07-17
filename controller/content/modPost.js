@@ -28,15 +28,18 @@ const updPosts = async (req, res) => {
 
   try {
     if (req.file || emptyPic == "true") {
+      console.log("PURGING LAST COVER IMG")
       const lastCoverPost = await pool.query('SELECT cover FROM posts WHERE id = $1;', [postId]);
-      var lastCover = lastCoverPost.rows.cover
+      const lastCover = lastCoverPost.rows.cover;
+      console.log("last cover present=", lastCover);
+      
       if (lastCover != null || lastCover) {
         var withoutTokenUrl = lastCover.split('?');
         var pathUrl = withoutTokenUrl[0].split('/');
         var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
         console.log("lastFilePath=", filePath);
         const imgRef = ref(storage, filePath);
-        
+
         const deletedImg = await deleteObject(imgRef);
         console.log("img deleted", deletedImg);
 
