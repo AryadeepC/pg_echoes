@@ -22,15 +22,6 @@ const deletePost = async (req, res) => {
 
     // let filePath = path.join(__dirname, "../../public", neededPost.cover);
     // console.log("img path=", filePath);\
-    if (neededPost.cover != null || neededPost.cover) {
-      var withoutTokenUrl = neededPost.cover.split('?');
-      var pathUrl = withoutTokenUrl[0].split('/');
-      var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
-
-      const imgRef = ref(storage, filePath);
-      const deletedImg = await deleteObject(imgRef);
-      console.log("img deleted", deletedImg);
-    }
     // fs.unlink(filePath, (err) => {
     //   if (err) console.error("ERROR IN IMG REMOVAL", err.message);
     //   else console.log("IMAGE DELETED FROM", filePath);
@@ -40,11 +31,23 @@ const deletePost = async (req, res) => {
     const deletedPost = await pool.query("DELETE FROM posts WHERE id = $1 RETURNING *;", [postId]);
     console.log("DELETED=", deletedPost.rows[0]);
 
-    return res.send({
+
+    res.send({
       status: "ok",
       message: "Post deleted successfully",
       post: deletedPost.rows[0]
     });
+
+    if (neededPost.cover != null || neededPost.cover) {
+      var withoutTokenUrl = neededPost.cover.split('?');
+      var pathUrl = withoutTokenUrl[0].split('/');
+      var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
+
+      const imgRef = ref(storage, filePath);
+      const deletedImg = await deleteObject(imgRef);
+      console.log("img deleted", deletedImg);
+    }
+    return
   } catch (err) {
     return Err(req, res, err.message);
   }

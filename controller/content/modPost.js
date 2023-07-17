@@ -19,6 +19,7 @@ const addView = async (req, res) => {
 };
 
 const updPosts = async (req, res) => {
+  let lastCover;
   const storage = getStorage();
   // console.log(req.body.emptyPic, typeof req.body.emptyPic, !!req.file)
   const postId = req.params.id;
@@ -30,20 +31,8 @@ const updPosts = async (req, res) => {
     if (req.file || emptyPic == "true") {
       console.log("PURGING LAST COVER IMG")
       const lastCoverPost = await pool.query('SELECT cover FROM posts WHERE id = $1;', [postId]);
-      const lastCover = lastCoverPost.rows[0].cover;
+      lastCover = lastCoverPost.rows[0].cover;
       console.log("last cover present=", lastCover);
-
-      if (lastCover != null || lastCover) {
-        var withoutTokenUrl = lastCover.split('?');
-        var pathUrl = withoutTokenUrl[0].split('/');
-        var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
-        console.log("lastFilePath=", filePath);
-        const imgRef = ref(storage, filePath);
-
-        const deletedImg = await deleteObject(imgRef);
-        console.log("img deleted", deletedImg);
-
-      }
     }
 
     if (req.file) {
@@ -72,7 +61,19 @@ const updPosts = async (req, res) => {
         return Err(req, res, "COVER PHOTO UPDATION FAILED!!");
     }
     console.log("UPDATED POST=", post.rows[0].id);
-    return res.send({ status: "ok", message: "updated post", id: post.rows[0].id });
+    res.send({ status: "ok", message: "updated post", id: post.rows[0].id });
+
+    if (lastCover != null || lastCover) {
+      var withoutTokenUrl = lastCover.split('?');
+      var pathUrl = withoutTokenUrl[0].split('/');
+      var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
+      console.log("lastFilePath=", filePath);
+      const imgRef = ref(storage, filePath);
+
+      const deletedImg = await deleteObject(imgRef);
+      console.log("img deleted", deletedImg);
+    }
+    return;
   } catch (err) {
     return Err(req, res, "Error while updating post" + err.message);
   }
