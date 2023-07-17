@@ -31,8 +31,8 @@ const create = async (req, res) => {
     // }
     if (req.file) {
       // console.log(req.file)
-      const { filename } = req.file;
-      const storageRef = ref(storage, `uploads/${filename}`)
+      // const { filename } = req.file;
+      const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
       const metadata = {
         contentType: req.file.mimetype,
       }
