@@ -4,7 +4,7 @@ const crypto = require("crypto");
 const { pool } = require("../../config/db");
 const jwt = require("jsonwebtoken");
 const { Err } = require("../../utils/ErrorResponse");
-const { getStorage, ref, getDownloadUrl, uploadBytesResumable } = require("firebase/storage")
+const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage")
 
 const create = async (req, res) => {
   const storage = getStorage();
@@ -37,7 +37,7 @@ const create = async (req, res) => {
         contentType: req.file.mimetype,
       }
       const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
-      cover = await getDownloadUrl(snapshot.ref)
+      cover = await getDownloadURL(snapshot.ref)
       console.log("cover=", cover);
       // if (filename) {
         // cover = "/uploads/" + filename;
