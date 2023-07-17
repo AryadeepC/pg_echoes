@@ -2,10 +2,14 @@ const path = require("path");
 const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 const fs = require("fs");
-const { ref, refFromURL, delete: delFile } = require("firebase/storage")
+// const firebase = require("firebase");
+const { ref, getStorage, refFromURL, delete: delFile } = require("firebase/storage")
 
 
 const deletePost = async (req, res) => {
+  // var storage = firebase.storage();
+  const storage = getStorage();
+  
   const postId = req.params.id;
   try {
     let neededPost = await pool.query('SELECT * FROM posts WHERE id = $1', [postId])
@@ -18,7 +22,7 @@ const deletePost = async (req, res) => {
 
     // let filePath = path.join(__dirname, "../../public", neededPost.cover);
     // console.log("img path=", filePath);
-    const deletedImg = await delFile(refFromURL(neededPost.cover));
+    const deletedImg = await delFile(storage.refFromURL(neededPost.cover));
     console.log("img deleted", deletedImg);
     // fs.unlink(filePath, (err) => {
     //   if (err) console.error("ERROR IN IMG REMOVAL", err.message);

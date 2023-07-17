@@ -26,30 +26,21 @@ const updPosts = async (req, res) => {
   let cover = "";
   console.log("UPDATING=", postId, !!title);
 
-  // if (req.file) {
-  //   cover = req.file.location;
-  //   console.log("file updated=", cover);
-  // }
-  if (req.file) {
-    // console.log("file updated=", req.file.filename);
-    // const { filename } = req.file;
-    // if (filename) {
-    //   cover = "/uploads/" + filename;
-    // }
-    const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
-    const metadata = {
-      contentType: req.file.mimetype,
-    }
-    const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
-    cover = await getDownloadURL(snapshot.ref)
-    // console.log("cover=", cover);
-  }
-  if (emptyPic === "true") {
-    cover = null;
-  }
-  console.log("cover=", cover);
-
   try {
+    if (req.file) {
+      const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
+      const metadata = {
+        contentType: req.file.mimetype,
+      }
+      const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
+      cover = await getDownloadURL(snapshot.ref)
+    }
+
+    if (emptyPic === "true") {
+      cover = null;
+    }
+    console.log("cover=", cover);
+
     const post = await pool.query('UPDATE posts SET title = $1, summary = $2, body = $3, updated_at = $4 WHERE id = $5 RETURNING *;', [title, summary, body, new Date(), postId])
     if (!post.rowCount) {
       return Err(req, res, "POST UPDATION FAILED!!");
