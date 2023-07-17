@@ -21,8 +21,12 @@ const deletePost = async (req, res) => {
     console.log("POST(TO BE DELETED) TITLE=", neededPost.title);
 
     // let filePath = path.join(__dirname, "../../public", neededPost.cover);
-    // console.log("img path=", filePath);
-    const imgRef = storage.refFromURL(neededPost.cover);
+    // console.log("img path=", filePath);\
+    var withoutTokenUrl = neededPost.cover.split('?');
+    var pathUrl = withoutTokenUrl[0].split('/');
+    var filePath = pathUrl[pathUrl.length - 1].replaceAll("%2F", "/");
+
+    const imgRef = ref(storage, filePath);
     const deletedImg = await delFile(imgRef);
     console.log("img deleted", deletedImg);
     // fs.unlink(filePath, (err) => {
