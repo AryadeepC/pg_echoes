@@ -24,7 +24,7 @@ const deletePost = async (req, res) => {
     // console.log("img path=", filePath);\
     var withoutTokenUrl = neededPost.cover.split('?');
     var pathUrl = withoutTokenUrl[0].split('/');
-    var filePath = pathUrl[pathUrl.length - 1].replaceAll("%2F", "/");
+    var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
 
     const imgRef = ref(storage, filePath);
     const deletedImg = await deleteObject(imgRef);
