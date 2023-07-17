@@ -10,7 +10,8 @@ router.get("/", (req, res) => res.send("in post"));
 router.get("/all", fetchAll);
 router.get("/fetch/:id", fetchSingle);
 
-router.post("/create", authorize, upload.single("cover_photo"), createPost);
+router.post("/create", upload.single("cover_photo"), createPost);
+// router.post("/create", authorize, upload.single("cover_photo"), createPost);
 
 router.put("/views/:id", addView);
 router.put("/update/:id", authorize, upload.single("cover_photo"), updPosts);

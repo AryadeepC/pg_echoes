@@ -4,8 +4,11 @@ const crypto = require("crypto");
 const { pool } = require("../../config/db");
 const jwt = require("jsonwebtoken");
 const { Err } = require("../../utils/ErrorResponse");
+const { getStorage, ref, getDownloadUrl, uploadBytesResumable } = require("firebase/storage")
 
 const create = async (req, res) => {
+  const storage = getStorage();
+
   let cover = "";
   const { userToken } = req.cookies;
   const { title, summary, body } = req.body;
@@ -29,10 +32,16 @@ const create = async (req, res) => {
     if (req.file) {
       // console.log(req.file)
       const { filename } = req.file;
-      if (filename) {
-        cover = "/uploads/" + filename;
-        console.log("cover", cover);
+      const storageRef = ref(storage, `uploads/${filename}`)
+      const metadata = {
+        contentType: req.file.mimetype,
       }
+      const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
+      cover = await getDownloadUrl(snapshot.ref)
+      console.log("cover=", cover);
+      // if (filename) {
+        // cover = "/uploads/" + filename;
+      // }
     }
 
     let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, created_at, updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date()]);
