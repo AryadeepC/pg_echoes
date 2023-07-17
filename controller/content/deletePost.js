@@ -22,13 +22,15 @@ const deletePost = async (req, res) => {
 
     // let filePath = path.join(__dirname, "../../public", neededPost.cover);
     // console.log("img path=", filePath);\
-    var withoutTokenUrl = neededPost.cover.split('?');
-    var pathUrl = withoutTokenUrl[0].split('/');
-    var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
+    if (neededPost.cover != null || neededPost.cover) {
+      var withoutTokenUrl = neededPost.cover.split('?');
+      var pathUrl = withoutTokenUrl[0].split('/');
+      var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
 
-    const imgRef = ref(storage, filePath);
-    const deletedImg = await deleteObject(imgRef);
-    console.log("img deleted", deletedImg);
+      const imgRef = ref(storage, filePath);
+      const deletedImg = await deleteObject(imgRef);
+      console.log("img deleted", deletedImg);
+    }
     // fs.unlink(filePath, (err) => {
     //   if (err) console.error("ERROR IN IMG REMOVAL", err.message);
     //   else console.log("IMAGE DELETED FROM", filePath);
