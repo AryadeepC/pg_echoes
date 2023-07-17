@@ -1,6 +1,6 @@
 const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
-const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage")
+const { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } = require("firebase/storage")
 
 const addView = async (req, res) => {
   const postId = req.params.id;
@@ -27,6 +27,19 @@ const updPosts = async (req, res) => {
   console.log("UPDATING=", postId, !!title);
 
   try {
+    if (req.file || emptyPic == "true") {
+      const lastCoverPost = await pool.query('SELECT cover FROM posts WHERE id = $1;', [postId]);
+      var lastCover = lastCoverPost.rows.cover
+      if (lastCover != null || lastCover) {
+        var withoutTokenUrl = lastCover.split('?');
+        var pathUrl = withoutTokenUrl[0].split('/');
+        var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
+
+        const imgRef = ref(storage, filePath);
+        await deleteObject(imgRef);
+      }
+    }
+    
     if (req.file) {
       const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
       const metadata = {
@@ -39,7 +52,9 @@ const updPosts = async (req, res) => {
     if (emptyPic === "true") {
       cover = null;
     }
+
     console.log("cover=", cover);
+
 
     const post = await pool.query('UPDATE posts SET title = $1, summary = $2, body = $3, updated_at = $4 WHERE id = $5 RETURNING *;', [title, summary, body, new Date(), postId])
     if (!post.rowCount) {
