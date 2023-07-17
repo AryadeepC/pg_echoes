@@ -4,4 +4,3 @@ old_config.env
 utils/test_jwt.js
 utils/test.js
 posts.sql
-config/firebase.js
