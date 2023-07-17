@@ -34,12 +34,15 @@ const updPosts = async (req, res) => {
         var withoutTokenUrl = lastCover.split('?');
         var pathUrl = withoutTokenUrl[0].split('/');
         var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
-
+        console.log("lastFilePath=", filePath);
         const imgRef = ref(storage, filePath);
-        await deleteObject(imgRef);
+        
+        const deletedImg = await deleteObject(imgRef);
+        console.log("img deleted", deletedImg);
+
       }
     }
-    
+
     if (req.file) {
       const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
       const metadata = {
