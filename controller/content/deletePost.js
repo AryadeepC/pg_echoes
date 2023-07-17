@@ -3,7 +3,7 @@ const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 const fs = require("fs");
 // const firebase = require("firebase");
-const { ref, getStorage, refFromURL, delete: delFile } = require("firebase/storage")
+const { ref, getStorage, deleteObject } = require("firebase/storage")
 
 
 const deletePost = async (req, res) => {
@@ -27,7 +27,7 @@ const deletePost = async (req, res) => {
     var filePath = pathUrl[pathUrl.length - 1].replaceAll("%2F", "/");
 
     const imgRef = ref(storage, filePath);
-    const deletedImg = await delFile(imgRef);
+    const deletedImg = await deleteObject(imgRef);
     console.log("img deleted", deletedImg);
     // fs.unlink(filePath, (err) => {
     //   if (err) console.error("ERROR IN IMG REMOVAL", err.message);
