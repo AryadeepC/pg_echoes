@@ -36,13 +36,13 @@ const create = async (req, res) => {
       console.log("cover=", cover);
 
     }
+    
+    // const cleanBody = sanitizeHtml(body, {
+    //   allowedTags: [],
+    //   allowedAttributes: {}
+    // });
 
-    const cleanBody = sanitizeHtml(body, {
-      allowedTags: [],
-      allowedAttributes: {}
-    });
-
-    let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, created_at, updated_at, search_docs) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date(), `setweight(to_tsvector(title), A) || setweight(to_tsvector(author), B) || setweight(to_tsvector(summary), C) || setweight(to_tsvector(coalesce(body, '')), D)`]);
+    let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, created_at, updated_at, search_docs) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date(), `setweight(to_tsvector(title), A) || setweight(to_tsvector(author), C) || setweight(to_tsvector(summary), B) || setweight(to_tsvector(body), D)`]);
 
     if (postObj.rowCount > 0) {
       postObj = postObj.rows[0];
