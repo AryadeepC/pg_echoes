@@ -1,6 +1,7 @@
 const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 const { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } = require("firebase/storage")
+const sanitizeHtml = require('sanitize-html')
 
 const addView = async (req, res) => {
   const postId = req.params.id;
@@ -50,8 +51,12 @@ const updPosts = async (req, res) => {
 
     console.log("cover=", cover);
 
+    const post = await pool.query('UPDATE posts SET title = $1, summary = $2, body = $3, updated_at = $4 WHERE id = $5 RETURNING *;', [title, summary, body, new Date(), postId]);
 
-    const post = await pool.query('UPDATE posts SET title = $1, summary = $2, body = $3, updated_at = $4 WHERE id = $5 RETURNING *;', [title, summary, body, new Date(), postId])
+    const updtVectors = await pool.query("UPDATE posts SET search_docs = setweight(to_tsvector(title), 'A') || setweight(to_tsvector(author), 'B') || setweight(to_tsvector(summary), 'C') || setweight(to_tsvector(body), 'D');", [])
+
+    console.log(updtVectors.rowCount ? updtVectors.rows : "not updated")
+
     if (!post.rowCount) {
       return Err(req, res, "POST UPDATION FAILED!!");
     }
