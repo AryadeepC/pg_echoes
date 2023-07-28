@@ -4,6 +4,7 @@ const crypto = require("crypto");
 const { pool } = require("../../config/db");
 const jwt = require("jsonwebtoken");
 const { Err } = require("../../utils/ErrorResponse");
+const sanitizeHtml = require('sanitize-html')
 const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage")
 
 const create = async (req, res) => {
@@ -25,13 +26,7 @@ const create = async (req, res) => {
       return Err(req, res, "Token invalid. Missing id!");
     }
 
-    // if (req.file) {
-    //   cover = req.file.location;
-    //   console.log("cover", cover);  
-    // }
     if (req.file) {
-      // console.log(req.file)
-      // const { filename } = req.file;
       const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
       const metadata = {
         contentType: req.file.mimetype,
@@ -39,12 +34,15 @@ const create = async (req, res) => {
       const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
       cover = await getDownloadURL(snapshot.ref)
       console.log("cover=", cover);
-      // if (filename) {
-        // cover = "/uploads/" + filename;
-      // }
+
     }
 
-    let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, created_at, updated_at) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date()]);
+    const cleanBody = sanitizeHtml(body, {
+      allowedTags: [],
+      allowedAttributes: {}
+    });
+
+    let postObj = await pool.query('INSERT INTO posts (id, author, author_id, title, summary, body, cover, created_at, updated_at, search_docs) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *;', [crypto.randomUUID(), decoded.name, decoded.id, title, summary, body, cover, new Date(), new Date(), setweight(to_tsvector(title), A) || setweight(to_tsvector(author), B) || setweight(to_tsvector(summary), C) || setweight(to_tsvector(coalesce(cleanBody, '')), D)]);
 
     if (postObj.rowCount > 0) {
       postObj = postObj.rows[0];

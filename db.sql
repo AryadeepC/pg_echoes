@@ -21,16 +21,62 @@ CREATE TABLE
         cover VARCHAR(1000),
         views INT DEFAULT 0,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     );
 
-INSERT INTO
-    users (username, email, password)
-VALUES (
-        'Arya',
-        'arya@gmail.com',
-        'Arya@123'
+EXPLAIN ANALYZE SELECT * FROM posts;
+
+ALTER TABLE posts ADD COLUMN search_docs tsvector;
+
+UPDATE posts
+SET
+    search_docs = setweight(to_tsvector(title), A) || setweight(to_tsvector(author), C) || setweight(to_tsvector(summary), B) || setweight(to_tsvector(body), D);
+
+SELECT *
+FROM posts
+WHERE
+    search_docs @@ websearch_to_tsquery('test')
+ORDER BY
+    ts_rank(
+        search_docs,
+        websearch_to_tsquery('test')
+    ) ASC;
+
+SELECT *
+FROM posts
+WHERE
+    search_docs @@ to_tsquery('simple','e:*')
+ORDER BY
+    ts_rank(
+        search_docs,
+        to_tsquery('simple','e:*')
     );
+
+
+
+CREATE INDEX search_idx ON posts USING gin (search_docs);
+
+
+DROP INDEX search_idx;
+
+ALTER TABLE posts RENAME COLUMN search_terms TO search_docs;
+
+
+SELECT *
+FROM posts
+WHERE
+    search_terms @@ to_tsquery('simple','co:*');
+
+SELECT *
+FROM posts
+WHERE
+    search_terms @@ websearch_to_tsquery('test');
+
+
+
+
+
+
 
 INSERT INTO
     posts (
