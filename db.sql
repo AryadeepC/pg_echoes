@@ -30,7 +30,7 @@ ALTER TABLE posts ADD COLUMN search_docs tsvector;
 
 UPDATE posts
 SET
-    search_docs = setweight(to_tsvector(title), A) || setweight(to_tsvector(author), C) || setweight(to_tsvector(summary), B) || setweight(to_tsvector(body), D);
+    search_docs = setweight(to_tsvector(title), 'A') || setweight(to_tsvector(author), 'C') || setweight(to_tsvector(summary), 'B') || setweight(to_tsvector(body), 'D');
 
 SELECT *
 FROM posts
@@ -45,7 +45,7 @@ ORDER BY
 SELECT *
 FROM posts
 WHERE
-    search_docs @@ to_tsquery('simple','e:*')
+    search_docs @@ to_tsquery('simple','a:*')
 ORDER BY
     ts_rank(
         search_docs,

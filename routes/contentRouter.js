@@ -5,10 +5,12 @@ const { addView, updPosts } = require("../controller/content/modPost");
 const createPost = require("../controller/content/createPost");
 const upload = require("../middlewares/multer");
 const authorize = require("../middlewares/authorize");
+const { search } = require("../controller/content/search");
 
 router.get("/", (req, res) => res.send("in post"));
 router.get("/all", fetchAll);
 router.get("/fetch/:id", fetchSingle);
+router.get("/search", search);
 
 router.post("/create", upload.single("cover_photo"), createPost);
 // router.post("/create", authorize, upload.single("cover_photo"), createPost);
