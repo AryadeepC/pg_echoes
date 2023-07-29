@@ -4,7 +4,7 @@ const { Err } = require("../../utils/ErrorResponse");
 const fetchAll = async (req, res) => {
   // console.log("FETCHING ALL");
   try {
-    const postPool = await pool.query('SELECT * FROM posts ORDER BY RANDOM();');
+    const postPool = await pool.query('SELECT * FROM posts ORDER BY ts_rank(search_docs);');
     console.log("total posts=", postPool.rowCount);
     return res.send({
       status: "ok",
@@ -21,7 +21,7 @@ const fetchSingle = async (req, res) => {
   // console.log("Fetching one");
   try {
     const singlePost = await pool.query('SELECT * FROM posts WHERE id = $1;', [id]);
-    console.log("SINGLE POST:TITLE=",singlePost.rows[0].title);
+    console.log("SINGLE POST:TITLE=", singlePost.rows[0].title);
 
     return res.send({
       status: "ok",
