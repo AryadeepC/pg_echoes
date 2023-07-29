@@ -4,7 +4,7 @@ const { Err } = require("../../utils/ErrorResponse");
 const fetchAll = async (req, res) => {
   // console.log("FETCHING ALL");
   try {
-    const postPool = await pool.query('SELECT * FROM posts ORDER BY ts_rank(search_docs);');
+    const postPool = await pool.query('SELECT * FROM posts ORDER BY updated_at DESC;');
     console.log("total posts=", postPool.rowCount);
     return res.send({
       status: "ok",
