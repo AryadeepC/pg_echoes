@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "nodemon index.js",
     "single": "pm2 start --name echoes -f index.js --no-daemon --wait-ready --listen-timeout 10000 --restart-delay=5000",
-    "start": "pm2 start --name echoes -f index.js -i 4 --no-daemon --wait-ready --listen-timeout 10000 --restart-delay=5000",
+    "start": "pm2 start --name echoes -f index.js -i 1 --no-daemon --wait-ready --listen-timeout 10000 --restart-delay=5000",
     "logs": "pm2 logs echoes",
     "monitor": "pm2 monit echoes",
     "crash": "pm2 delete echoes",
