@@ -10,15 +10,16 @@ const { getUserPosts } = require("../controller/content/fetchPost");
 const authorize = require("../middlewares/authorize");
 const { profilePage } = require("../controller/content/profile");
 const { logoutController } = require("../controller/auth/logout");
+const { authLimit, fetchLimit } = require("../utils/rateLimit");
 
 router.get("/", veriftJwt);
-router.get("/posts", authorize, getUserPosts);
+router.get("/posts", fetchLimit, authorize, getUserPosts);
 router.get("/profile/:id", authorize, profilePage);
 router.get("/logout", logoutController);
 router.get("/forgot", authorize, forgotPassword);
 
-router.post("/login", loginController);
-router.post("/register", registerController);
+router.post("/login", authLimit, loginController);
+router.post("/register", authLimit, registerController);
 router.post("/reset", authorize, resetPassword);
 
 module.exports = router;

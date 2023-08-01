@@ -7,7 +7,12 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "single": "pm2 start --name echoes -f index.js --no-daemon --wait-ready --listen-timeout 10000 --restart-delay=5000",
+    "start": "pm2 start --name echoes -f index.js -i 4 --no-daemon --wait-ready --listen-timeout 10000 --restart-delay=5000",
+    "logs": "pm2 logs echoes",
+    "monitor": "pm2 monit echoes",
+    "crash": "pm2 delete echoes",
+    "ls-nodes": "pm2 ls echoes"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.370.0",
@@ -17,12 +22,14 @@
     "dotenv": "^16.0.3",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
+    "express-rate-limit": "^6.8.1",
     "firebase": "^10.0.0",
     "jsonwebtoken": "^9.0.0",
     "multer": "^1.4.5-lts.1",
     "multer-s3": "^3.0.1",
     "nodemailer": "^6.9.3",
     "pg": "^8.11.1",
+    "pm2": "^5.3.0",
     "sanitize-html": "^2.11.0"
   },
   "devDependencies": {

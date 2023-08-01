@@ -15,10 +15,17 @@ const pool = new Pool({
 })
 
 const poolAlive = async () => {
-  const tm = await pool.query('SELECT NOW()');
+  try {
+    const tm = await pool.query('SELECT NOW()');
 
-  if (tm.rowCount == 1)
-    console.log('PostgreSQL Pool=ACTIVE |', (tm.rows[0].now))
+    if (tm.rowCount == 1) {
+      console.log('PostgreSQL=ACTIVE |', (tm.rows[0].now))
+      process.send('ready')
+    }
+  } catch (error) {
+    console.error({ ...error })
+    process.exit(0);
+  }
 }
 
 module.exports = { pool, poolAlive };

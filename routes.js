@@ -1,6 +1,7 @@
 const appRouter = require("express").Router();
 const contentRouter = require("./routes/contentRouter");
 const authRouter = require("./routes/authRouter");
+const { demoLimit } = require("./utils/rateLimit");
 // const getRouter = require("./routes/getRouter");
 
 appRouter.get("/", (req, res) => {
@@ -9,6 +10,11 @@ appRouter.get("/", (req, res) => {
   res.render("index.ejs");
   res.end();
   // res.send("You're HOME");
+});
+
+appRouter.get("/demo", demoLimit, (req, res) => {
+  console.log("demo route");
+  res.send("demo page");
 });
 
 appRouter.use("/user", authRouter);

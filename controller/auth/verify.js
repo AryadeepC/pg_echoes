@@ -31,7 +31,8 @@ const veriftJwt = async (req, res) => {
     }
     return Err(req, res, "Invalid/tampered user token");
   } catch (error) {
-    return Err(req, res, error.message);
+    const er_msg = error.name === "JsonWebTokenError" ? "Internal Server Error" : error.message;
+    return Err(req, res, er_msg);
   }
 };
 
