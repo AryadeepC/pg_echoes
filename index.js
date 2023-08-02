@@ -6,11 +6,11 @@ const app = express();
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const router = require("./routes.js");
-const { pool, poolAlive } = require("./config/db.js");
+const schedule = require('node-schedule');
+const { pool, poolAlive, redisClient } = require("./config/db.js");
 const { firebaseConfig } = require("./config/firebase.js");
 const { initializeApp } = require("firebase/app");
-
-
+const { dbDump } = require("./config/cron-dump.js");
 
 // app.use(express.static("/public"));
 app.use(express.static(path.join(__dirname, "/public")));
@@ -20,9 +20,14 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.use("/", router);
 poolAlive();
+// redisStat()
 initializeApp(firebaseConfig);
 
-// const val = pool.query(`SELECT * FROM users;`).then(val => console.log(val.rows));
+
+const dbJob = schedule.scheduleJob('* 59 23 * * *', async () => {
+  dbDump();
+  // dbJob.cancel();
+});
 
 app.listen(process.env.PORT || 8000, () => {
   console.log("server=https://echoes-api.onrender.com");

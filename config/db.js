@@ -1,14 +1,15 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../config.env") });
 const { Pool } = require('pg')
+const { createClient } = require("redis");
 
-// const pool = new Pool({
-//   host: process.env.POSTGRES_HOST_LOCAL,
-//   user: process.env.POSTGRES_USER_LOCAL,
-//   password: process.env.POSTGRES_PASSWORD_LOCAL,
-//   port: process.env.POSTGRES_PORT_LOCAL,
-//   database: process.env.POSTGRES_DB_LOCAL,
-// })
+const redisClient = createClient({
+  url: process.env.REDIS_URL,
+  socket: {
+    reconnectStrategy: retries => Math.min(retries * 50, 1000),
+    connectTimeout: 10 * 1000,
+  }
+});
 
 const pool = new Pool({
   connectionString: process.env.POSTGRES_URL + "?sslmode=require",
@@ -17,16 +18,30 @@ const pool = new Pool({
 const poolAlive = async () => {
   try {
     const tm = await pool.query('SELECT NOW()');
-
     if (tm.rowCount == 1) {
-      console.log('PostgreSQL=ACTIVE |', (tm.rows[0].now))
+      console.log('PostgreSQL=ONLINE |', (tm.rows[0].now))
       process.send('ready')
     }
   } catch (error) {
-    console.error({ ...error })
+    // console.error({ ...error })
+    await pool.end()
+    console.error('PostgreSQL Client Error', error.code, error.errno)
     process.exit(0);
+  }
+  finally {
+    console.log(" -- PGSQL -- ".padStart(10));
   }
 }
 
-module.exports = { pool, poolAlive };
+const redisStat = async () => {
+  //   try {
+  //     await redisClient.connect();
+  //     console.log("redis=ONLINE");
+  //   } catch (error) {
+  //     console.error('Redis Client Error', error);
+  //   } finally {
+  //     console.log(" -- REDIS -- ".padStart(10));
+  //   }
+}
 
+module.exports = { pool, poolAlive, redisClient, redisStat };
