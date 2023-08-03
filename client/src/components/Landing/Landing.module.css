@@ -1,0 +1,176 @@
+@import url("https://fonts.googleapis.com/css2?family=Kablammo&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cabin+Sketch:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap");
+
+.animated_main {
+  /* margin-top: 55px; */
+  margin-top: -25px;
+  height: 75vh;
+  /* width: 95%;  */
+  width: fit-content;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  gap: 10px;
+}
+.anim_details {
+  width: 670px;
+}
+
+.animated_main > div:first-child h1 {
+  margin-top: 45px;
+  top: 0;
+  right: 0;
+  font-family: "Kablammo", cursive;
+  -webkit-text-stroke: 0.7px black;
+  font-size: 160px;
+  margin-bottom: 0px;
+}
+.animated_main > div:first-child > h2 {
+  font-family: "Cabin Sketch", cursive;
+  font-size: 50px;
+  word-wrap: break-word;
+  text-shadow: 3px 3px silver;
+  color: rgb(61, 68, 214);
+}
+
+.anim_svg {
+  width: 500px;
+  height: 350px;
+  /* background-color: rgb(144, 204, 194); */
+  /* background-color: rgba(43, 178, 196, 0.45); */
+}
+
+/* .anim_svg svg {
+  width: 100%;
+} */
+
+.animated_main > div > svg {
+  background-color: rgba(41, 203, 224, 0.548);
+  border-radius: 15px;
+  animation: float_ing 1s ease-in infinite;
+}
+.animated_main > div > svg:hover {
+  cursor: pointer;
+}
+
+@keyframes float_ing {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.01);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media only screen and (max-width: 1200px) {
+  .animated_main {
+    flex-direction: column;
+    justify-content: center;
+    align-self: center;
+    height: fit-content;
+  }
+  .animated_main > div:first-child h1 {
+    margin-inline: 35px;
+  }
+  .animated_main > div:first-child h2 {
+    margin-inline: 35px;
+    margin-bottom: 70px;
+  }
+  .anim_details {
+    width: 900px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .anim_svg {
+    width: 1000px;
+    margin-top: -33px;
+    height: 450px;
+    margin-left: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+}
+
+@media only screen and (max-width: 1025px) {
+  .anim_svg {
+    width: 900px;
+  }
+}
+@media only screen and (max-width: 915px) {
+  .anim_svg {
+    width: 840px;
+  }
+}
+
+@media only screen and (max-width: 850px) {
+  .anim_svg {
+    width: 720px;
+  }
+  .animated_main > div:first-child h1 {
+    font-size: 150px;
+  }
+  .animated_main > div:first-child h2 {
+    font-size: 40px;
+  }
+}
+
+@media only screen and (max-width: 740px) {
+  .anim_svg {
+    width: 650px;
+  }
+}
+
+@media only screen and (max-width: 650px) {
+  .anim_svg {
+    width: 500px;
+  }
+  .animated_main > div:first-child h1 {
+    font-size: 150px;
+  }
+  .animated_main > div:first-child h2 {
+    font-size: 30px;
+  }
+}
+
+@media only screen and (max-width: 550px) {
+  .animated_main > div:first-child h1 {
+    font-size: 100px;
+  }
+  .animated_main > div:first-child h2 {
+    font-size: 27px;
+    text-shadow: 1.5px 1.5px silver;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .anim_svg {
+    width: 400px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .anim_svg {
+    width: 300px;
+  }
+  .animated_main > div:first-child h1 {
+    margin-inline: 20px;
+    font-size: 65px;
+  }
+  .animated_main > div:first-child h2 {
+    margin-inline: 20px;
+    font-size: 20px;
+  }
+}
+@media only screen and (max-width: 310px) {
+  .anim_svg {
+    width: 240px;
+  }
+  .animated_main > div:first-child h2 {
+    font-size: 18px;
+  }
+}

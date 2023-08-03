@@ -1,0 +1,79 @@
+.searchFull {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.searchPaper {
+  padding: 2px 4px;
+  display: flex;
+  min-width: 650px;
+  /* max-width: 65%;   */
+  align-items: center;
+}
+
+.searchForm {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+
+.searchForm input {
+  font-family: "JetBrains Mono";
+}
+/* 
+.searchForm input ::-webkit-search-cancel-button {
+  background-color: black;
+} */
+
+.searchForm button {
+  padding: 10px;
+}
+
+.searchResult {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  margin-top: 20px;
+}
+
+.lottie {
+  margin: 0 auto;
+  width: 550px;
+  display: flex;
+}
+
+@media screen and (max-width: 880px) {
+  .searchPaper {
+    min-width: 450px;
+  }
+  .lottie {
+    width: 350px;
+  }
+}
+
+@media screen and (max-width: 580px) {
+  .searchForm {
+    padding: 10px;
+  }
+  .searchPaper {
+    min-width: 300px;
+  }
+  .lottie {
+    width: 300px;
+  }
+}
+@media screen and (max-width: 370px) {
+
+  .searchPaper {
+    min-width: 150px;
+  }
+  .lottie {
+    width: 280px;
+  }
+}

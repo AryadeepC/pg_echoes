@@ -1,0 +1,26 @@
+.bar {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  width: 150px;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #eee;
+  border-radius: 5px;
+  height: 40px;
+  padding: 0 10px;
+}
+.likeCount {
+  display: flex;
+  align-items: center;
+  color: #007bff;
+}
+.viewCount {
+  display: flex;
+  align-items: center;
+  color: #28a745;
+}
+.icon {
+  margin-right: 5px;
+}

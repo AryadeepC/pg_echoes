@@ -1,0 +1,78 @@
+.create_post {
+  display: flex;
+  justify-content: center;
+  gap: 35px;
+  margin-bottom: 50px;
+}
+.lottie {
+  display: flex;
+  position: relative;
+  top: -90px;
+  height: 100vh;
+  width: 100%;
+  transform: scale(0.75);
+}
+
+.create_post > a {
+  text-decoration: none;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 600px;
+  width: 200px;
+  height: 43px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-family: "JetBrains Mono";
+  text-align: center;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.central_button:hover {
+  font-weight: 800px;
+  background-color: black;
+  color: white;
+  transform: scale(1.06);
+}
+
+.post_list {
+  padding-top: 45px;
+}
+
+@media only screen and (max-width: 600px) {
+  .create_post{
+    gap:15px
+  }
+  .central_button,
+  .create_post > a {
+    font-size: 11px;
+    padding:10px 10px;
+    width: 125px;
+    height: auto;
+  }
+}
+
+@media only screen and (max-width: 330px) {
+  .central_button,
+  .create_post > a {
+    font-size: 8px;
+    width: 95px;
+    height: auto;
+  }
+}
+
+@media only screen and (max-width: 230px) {
+  .central_button,
+  .create_post > a {
+
+    font-size: 7px;
+    padding: 7px 7px;
+    width: 75px;
+    height: auto;
+  }
+}

@@ -1,0 +1,318 @@
+.card {
+  position: relative;
+  box-sizing: border-box;
+  margin: 65px auto;
+  width: 900px;
+  display: flex;
+  justify-content: space-evenly;
+  gap: 25px;
+  background-color: white;
+  padding: 30px;
+  border-radius: 15px;
+  /* border: 2px solid black; */
+  box-shadow: 0px 0px 30px rgba(0, 0, 0, 0.2);
+  animation: gradientBackground 10s ease infinite;
+  background-size: 600% 600%;
+}
+
+#hidden {
+  opacity: 0;
+  filter: blur (5px);
+  transform: translateX(-100%);
+  transition: all 1s;
+}
+.show {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateX(0%);
+}
+
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.card:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.7);
+}
+/* .card > div {
+  cursor: pointer;
+} */
+
+.card_img,
+.card_text {
+  height: 280px;
+}
+
+.card_img {
+  max-width: 50%;
+  /* border: 0.1px solid black; */
+  display: flex;
+  justify-content: center;
+  display: flex;
+  border-radius: 7px;
+  aspect-ratio: auto;
+  width: fit-content;
+}
+.card_img:hover {
+  cursor: pointer;
+}
+
+.card_img img {
+  width: 100%;
+  /* aspect-ratio: auto;   */
+  /* max-width: auto; */
+  border-radius: 7px;
+  max-height: 100%;
+  transition: 5s linear ease-out;
+}
+.card_img > img:hover {
+  /* box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.7); */
+  /* transform: scale(1.01); */
+}
+
+.card_text {
+  width: 100%;
+  overflow: hidden;
+}
+
+.card_text > h2 {
+  margin: 0;
+  font-family: "Work Sans", sans-serif;
+  font-size: 29px;
+}
+.card_text > h2:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.card_text a {
+  font-weight: 600px;
+  text-decoration: none;
+  margin: 0 25px 0 5px;
+  color: inherit;
+  font-family: "JetBrains Mono";
+  font-size: 13px;
+}
+.card_text time {
+  font-family: "JetBrains Mono";
+  font-size: 11px;
+}
+.card_text p {
+  margin-top: 2px;
+  /* background-color: red; */
+}
+
+.card_body {
+  font-family: "Open Sans", sans-serif;
+  text-align: justify;
+}
+.card_body:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.card_detail_para {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.views {
+  /* width: inherit; */
+  font-family: "JetBrains Mono";
+  font-size: 11px;
+  text-align: right;
+}
+
+.time {
+  /* float: right; */
+  position: absolute;
+  right: 0;
+}
+
+.author {
+  font-weight: bolder;
+}
+
+.author:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+button[id="editBtn"] {
+  position: absolute;
+  top: -29px;
+  right: 35px;
+}
+button[id="delBtn"] {
+  position: absolute;
+  top: -29px;
+  right: -24px;
+}
+
+.del_central_button {
+  text-align: center;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 600px;
+  width: 200px;
+  height: 43px;
+  background-color: red;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-family: "JetBrains Mono";
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.del_central_button:hover {
+  font-weight: 800px;
+  background-color: red;
+  color: white;
+  /* border: 2px solid red; */
+  box-shadow: 5px 5px 15px gray;
+  transform: scale(1.06);
+}
+
+.card_modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.card_modal_content {
+  font-family: "JetBrains Mono";
+  z-index: 10;
+  box-shadow: 3px 3px 13px rgba(128, 128, 128, 0.878);
+  font-size: 28px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 550px;
+  text-align: center;
+  border-radius: 15px;
+  position: relative;
+}
+
+.card_modal_content button {
+  box-sizing: border-box;
+  padding: 9px 20px;
+  border-radius: 6px;
+  background-color: red;
+  color: white;
+}
+
+.card_close {
+  color: #aaaaaa;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+.card_close:hover {
+  transform: scale(1.5);
+}
+
+@media only screen and (max-width: 1200px) {
+  .card {
+    max-width: 90% !important;
+  }
+}
+@media only screen and (max-width: 1000px) {
+  .card {
+    width: 85% !important;
+  }
+  .card_text > h2 {
+    font-size: 25px;
+  }
+
+  .card_text a {
+    font-size: 11px;
+  }
+  .card_text time {
+    font-size: 9px;
+  }
+  .card_body {
+    font-size: 13px;
+  }
+}
+@media only screen and (max-width: 950px) {
+  .card {
+    max-width: 500px;
+    height: auto;
+    flex-direction: column;
+    height: min-content;
+  }
+  .card_text {
+    height: auto;
+  }
+  
+  .card_img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
+  }
+}
+
+@media only screen and (max-width: 580px) {
+  .card {
+    width: 70%;
+  }
+  .card_img > img {
+    max-width: 100%;
+    padding: 5px;
+    height: auto;
+  }
+  .card_img,
+  .card_body {
+    height: auto;
+    font-size: 9x;
+    /* max-height: 200px; */
+  }
+  .card_text > h2 {
+    font-size: 17px;
+  }
+  .card_text > p > span {
+    font-size: 9px;
+  }
+  .card_text a {
+    font-size: 9px;
+  }
+  .card_text time {
+    font-size: 7px;
+  }
+
+  button[id="editBtn"] {
+    width: 35px;
+    height: 35px;
+    top: -21px;
+    right: 20px;
+  }
+  button[id="delBtn"] {
+    width: 35px;
+    height: 35px;
+    top: -21px;
+    right: -20px;
+  }
+}

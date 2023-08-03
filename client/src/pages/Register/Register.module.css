@@ -1,0 +1,343 @@
+.register_container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f2f2f2;
+  /* height: ; */
+  font-family: "JetBrains Mono";
+  width: 700px;
+  background: linear-gradient(
+    45deg,
+    #ff00ff,
+    #00ffff,
+    #ffff00,
+    #ff00ffb0,
+    #00ffff,
+    #ffff00
+  );
+  animation: gradientBackground 10s ease infinite;
+  background-size: 600% 600%;
+  border-radius: 15px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.register_container h1 {
+  font-size: 2rem;
+  margin-bottom: 7px;
+  color: #272727;
+}
+.register_container > p {
+  font-size: 0.9rem;
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: #33333396;
+}
+
+.register_form {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.35);
+  max-width: 450px;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+.register_form label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.register_form input {
+  font-family: "JetBrains Mono";
+
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  border-radius: 9px;
+  border: none;
+  width: 350px;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.register_form input:hover {
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+.register_form input:focus {
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.register_form input:not(:placeholder-shown) {
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.register_form button {
+  font-family: "JetBrains Mono";
+
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 600px;
+  width: 250px;
+  height: 43px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.register_form button:hover {
+  font-weight: 800px;
+  background-color: black;
+  color: white;
+  transform: scale(1.06);
+}
+
+.register_form button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.redir {
+  font-family: "JetBrains Mono";
+  margin-top: 30px;
+}
+.redir a {
+  text-decoration: none;
+}
+
+.redir a:hover {
+  text-decoration: underline;
+}
+
+.err {
+  text-align: center;
+  font-family: "JetBrains Mono";
+  margin: 0 0 13px 0;
+  font-size: 11px;
+  color: rgb(180, 24, 24);
+}
+
+/*--------------------*/
+
+.reg_modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.reg_modal_content {
+  font-family: "JetBrains Mono";
+  font-size: 28px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  text-align: center;
+  border-radius: 15px;
+  position: relative;
+}
+
+.reg_modal_content > button {
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 600px;
+  width: 100px;
+  height: 43px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-family: "JetBrains Mono";
+  cursor: pointer;
+}
+
+.reg_modal_content > button:hover {
+  font-weight: 800px;
+  background-color: black;
+  color: white;
+  transform: scale(1.06);
+}
+
+.reg_close {
+  color: #aaaaaa;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+.reg_close:hover {
+  transform: scale(1.5);
+}
+
+/* ========RESP======== */
+
+@media screen and (max-width: 830px) {
+  .register_container {
+    max-width: 550px;
+  }
+  .register_container h1 {
+    font-size: 1.7rem;
+  }
+  .redir,
+  .redir a,
+  .register_container > p {
+    font-size: 0.7rem;
+    margin-bottom: 19px;
+  }
+  .register_form {
+    max-width: 350px;
+  }
+  .register_form input {
+    min-width: auto;
+  }
+  .register_form button {
+    /* width: 130px; */
+    padding: 8px 16px;
+  }
+  .err {
+    font-size: 9px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .register_container {
+    max-width: 350px;
+  }
+  .register_container h1 {
+    padding-top: 5px;
+    font-size: 1.3rem;
+  }
+  .redir,
+  .redir a {
+    font-size: 0.5rem;
+  }
+  .register_container > p {
+    font-size: 0.5rem;
+    margin-bottom: 19px;
+    padding-inline: 20px;
+  }
+  .register_form {
+    max-width: 200px;
+  }
+  .register_form input {
+    padding: 0.5rem;
+    width: 200px;
+    font-size: 0.7rem;
+  }
+  .register_form button {
+    padding: 0px;
+    width: 130px;
+    height: 30px;
+    font-size: 0.7rem;
+  }
+  .err {
+    font-size: 7px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .register_container {
+    width: 240px;
+  }
+  .register_container h1 {
+    padding-top: 5px;
+    font-size: 1rem;
+  }
+  .redir,
+  .redir a,
+  .register_container > p {
+    font-size: 0.339rem;
+    margin-bottom: 19px;
+  }
+  .register_form {
+    width: 110px;
+  }
+  .register_form input {
+    margin-bottom: 10px;
+    padding: 0.3rem;
+    width: 150px;
+    border-radius: 4px;
+    font-size: 0.5rem;
+  }
+  .register_form button {
+    padding: 0px;
+    width: 100px;
+    height: 20px;
+    font-size: 0.5rem;
+  }
+  .err {
+    font-size: 7px;
+  }
+}
+
+@media screen and (max-width: 250px) {
+  .register_container {
+    width: 180px;
+  }
+  .register_container h1 {
+    padding-top: 12px;
+    font-size: 0.7rem;
+  }
+
+  .redir,
+  .redir a {
+    font-size: 0.339rem;
+  }
+  .register_container > p {
+    margin-bottom: 17px;
+    font-size: 0.339rem;
+    padding-inline: 15px;
+  }
+  .register_form {
+    width: 75px;
+  }
+  .register_form input {
+    padding: 0.3rem;
+    width: 120px;
+    font-size: 0.5rem;
+  }
+  .register_form button {
+    padding: 0px;
+    width: 90px;
+    height: 20px;
+    font-size: 0.5rem;
+  }
+  .err {
+    font-size: 5px;
+  }
+}

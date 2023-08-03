@@ -1,0 +1,239 @@
+.forgot_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2;
+  height: 500px;
+  font-family: "JetBrains Mono";
+  border-radius: 15px;
+  margin: 0 auto;
+  background: linear-gradient(
+    45deg,
+    #ff00ff,
+    #00ffff,
+    #ffff00,
+    #ff00ffb0,
+    #00ffff,
+    #ffff00
+  );
+  background-size: 600% 600%;
+  animation: gradientBackground 10s ease infinite;
+}
+
+@keyframes gradientBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+.forgot_container h1 {
+  text-align: center;
+  font-size: 2rem;
+  margin-top: 35px;
+  margin-bottom: 35px;
+  color: #292929;
+}
+
+.forgot_form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  max-width: 450px;
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+.forgot_form label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.forgot_form input {
+  font-family: "JetBrains Mono";
+  padding: 0.8rem;
+  margin-bottom: 1.5rem;
+  border-radius: 9px;
+  border: none;
+  width: 350px;
+  font-size: 1rem;
+  color: #333;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.forgot_form input:hover {
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+.forgot_form input:focus {
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.forgot_form input:not(:placeholder-shown) {
+  outline: none;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+}
+
+.forgot_form button {
+  box-sizing: border-box;
+  font-size: 16px;
+  font-weight: 600px;
+  width: 250px;
+  height: 43px;
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-family: "JetBrains Mono";
+
+  cursor: pointer;
+}
+
+.forgot_form button:hover {
+  font-weight: 800px;
+  background-color: black;
+  color: white;
+  transform: scale(1.06);
+}
+
+.forgot_form button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.err {
+  text-align: center;
+  font-family: "JetBrains Mono";
+  margin: 0 0 13px 0;
+  font-size: 11px;
+  color: rgb(180, 24, 24);
+}
+
+/* ------------ */
+.forgot_modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.forgot_modal_content {
+  font-family: "JetBrains Mono";
+  font-size: 28px;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 65%;
+  text-align: center;
+  border-radius: 15px;
+  position: relative;
+}
+.forgot_close {
+  color: #aaaaaa;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 28px;
+  font-weight: bold;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+.forgot_close:hover {
+  transform: scale(1.5);
+}
+
+/* ====================================== */
+
+@media only screen and (max-width: 1200px) {
+  .forgot_container {
+    width: 750px;
+  }
+  .forgot_container h1 {
+    font-size: 1.8rem;
+    margin-top: -7px;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .forgot_container {
+    width: 70%;
+  }
+  .forgot_container h1 {
+    font-size: 1.6rem;
+    margin-top: -7px;
+  }
+  .forgot_form {
+    padding-inline: 3px;
+    width: 85%;
+  }
+  .forgot_form input {
+    width: 88%;
+  }
+}
+
+@media only screen and (max-width: 680px) {
+  .forgot_container {
+    width: 400px;
+  }
+  .forgot_form button {
+    width: 150px;
+    font-size: 13px;
+  }
+}
+@media only screen and (max-width: 420px) {
+  .forgot_container {
+    width: 220px;
+    padding: 20px;
+    height: auto;
+  }
+  .forgot_container h1 {
+    font-size: 1.2rem;
+    padding: 5px;
+    margin-top: -10px;
+  }
+  .forgot_form {
+    margin-top: -20px;
+    width: 180px;
+  }
+  .forgot_form input {
+    font-size: 0.7rem;
+    width: 135px;
+    margin-bottom: 5px;
+    padding: 0.6rem;
+  }
+  .err {
+    font-size: 7px;
+  }
+  .forgot_form button {
+    width: 125px;
+    height: auto;
+    padding-block: 5px;
+    font-size: 9px;
+  }
+}
+
+@media only screen and (max-width: 290px) {
+  .forgot_container {
+    width: 180px;
+  }
+  .forgot_container h1 {
+    font-size: 0.9rem;
+  }
+}

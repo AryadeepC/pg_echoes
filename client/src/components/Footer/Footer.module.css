@@ -1,0 +1,26 @@
+.footer {
+  /* background-color: #f0f0f0; */
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+  bottom: 0;
+  background-color: rgb(144, 204, 194, 0.7);
+  padding: 10px;
+  text-align: center;
+  margin-top: 25px;
+  font-family: "JetBrains Mono";
+  font-size: 11px;
+  /* overflow-x: hidden; */
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 10px;
+    font-size:  11px;
+  }
+}
+@media (max-width: 380px) {
+  .container {
+    font-size: 9px;
+  }
+}

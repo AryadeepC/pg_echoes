@@ -1,0 +1,31 @@
+.full {
+  background-color: black;
+  background: url("../../assets/404ErrorPage.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+.full:hover {
+  cursor: pointer;
+}
+
+.tooltip {
+  opacity: 0;
+  z-index: 100;
+  font-family: "JetBrains Mono";
+  margin-top: 15px;
+  margin-left: 7px;
+  border-radius: 10px;
+  padding: 7px;
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  top: 0;
+  left: 0;
+}
+.full:hover .tooltip {
+  opacity: 1;
+}

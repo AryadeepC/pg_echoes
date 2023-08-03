@@ -1,5 +1,7 @@
 -- CREATE DATABASE echoes;
 
+-- USER TABLE CREATION
+
 CREATE TABLE
     users (
         id UUID PRIMARY KEY NOT NULL,
@@ -9,6 +11,8 @@ CREATE TABLE
         reset_password_token VARCHAR(255),
         reset_password_expiry BIGINT
     );
+
+-- POST TABLE CREATION
 
 CREATE TABLE
     posts (
@@ -21,13 +25,14 @@ CREATE TABLE
         cover VARCHAR(1000),
         views INT DEFAULT 0,
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+        updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
+ALTER TABLE posts ADD COLUMN search_docs tsvector;
 
 EXPLAIN ANALYZE SELECT * FROM posts;
 
-ALTER TABLE posts ADD COLUMN search_docs tsvector;
 
+-- CHANGE THIS TO MATCH TIME AND OTHER CRITERIA
 UPDATE posts
 SET
     search_docs = setweight(to_tsvector(title), 'A') || setweight(to_tsvector(author), 'C') || setweight(to_tsvector(summary), 'B') || setweight(to_tsvector(body), 'D');
@@ -35,7 +40,7 @@ SET
 SELECT *
 FROM posts
 WHERE
-    search_docs @@ websearch_to_tsquery('test')
+    search_docs @ @ websearch_to_tsquery('test')
 ORDER BY
     ts_rank(
         search_docs,
@@ -45,38 +50,28 @@ ORDER BY
 SELECT *
 FROM posts
 WHERE
-    search_docs @@ to_tsquery('simple','a:*')
+    search_docs @ @ to_tsquery('simple', 'a:*')
 ORDER BY
     ts_rank(
         search_docs,
-        to_tsquery('simple','e:*')
+        to_tsquery('simple', 'e:*')
     );
 
-
-
 CREATE INDEX search_idx ON posts USING gin (search_docs);
-
 
 DROP INDEX search_idx;
 
 ALTER TABLE posts RENAME COLUMN search_terms TO search_docs;
 
+SELECT *
+FROM posts
+WHERE
+    search_terms @ @ to_tsquery('simple', 'co:*');
 
 SELECT *
 FROM posts
 WHERE
-    search_terms @@ to_tsquery('simple','co:*');
-
-SELECT *
-FROM posts
-WHERE
-    search_terms @@ websearch_to_tsquery('test');
-
-
-
-
-
-
+    search_terms @ @ websearch_to_tsquery('test');
 
 INSERT INTO
     posts (
