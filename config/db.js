@@ -3,6 +3,7 @@ require("dotenv").config({ path: path.join(__dirname, "../config.env") });
 const { Pool } = require('pg')
 const { createClient } = require("redis");
 
+// const redisClient = createClient();
 const redisClient = createClient({
   url: process.env.REDIS_URL,
   socket: {
@@ -34,14 +35,14 @@ const poolAlive = async () => {
 }
 
 const redisStat = async () => {
-  //   try {
-  //     await redisClient.connect();
-  //     console.log("redis=ONLINE");
-  //   } catch (error) {
-  //     console.error('Redis Client Error', error);
-  //   } finally {
-  //     console.log(" -- REDIS -- ".padStart(10));
-  //   }
+  try {
+    await redisClient.connect();
+    console.log("redis=ONLINE");
+  } catch (error) {
+    console.error('Redis Client Error', error);
+  } finally {
+    console.log(" -- REDIS -- ".padStart(10));
+  }
 }
 
 module.exports = { pool, poolAlive, redisClient, redisStat };

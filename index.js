@@ -7,12 +7,11 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const router = require("./routes.js");
 const schedule = require('node-schedule');
-const { pool, poolAlive, redisClient } = require("./config/db.js");
+const { pool, poolAlive, redisClient, redisStat } = require("./config/db.js");
 const { firebaseConfig } = require("./config/firebase.js");
 const { initializeApp } = require("firebase/app");
 const { dbDump } = require("./config/cron-dump.js");
 
-// app.use(express.static("/public"));
 app.use(express.static(path.join(__dirname, "/public")));
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
@@ -20,8 +19,10 @@ app.use(cookieParser());
 app.set("view engine", "ejs");
 app.use("/", router);
 poolAlive();
-// redisStat()
+redisStat();
 initializeApp(firebaseConfig);
+
+
 
 
 const dbJob = schedule.scheduleJob('* 59 23 * * *', async () => {

@@ -6,9 +6,9 @@ const { Err } = require("../../utils/ErrorResponse");
 const { signAccessToken, signRefreshToken } = require("../../utils/token");
 
 const login = async (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   // console.log("🍘", req.cookies);
-  
+
   const { email = "", password = "" } = req.body;
   if (!email || !password) {
     return Err(req, res, "Bad request");
@@ -29,7 +29,7 @@ const login = async (req, res) => {
 
     const payload = { id: userInDb.id, name: userInDb.username }
     const accessToken = signAccessToken(payload);
-    const refreshToken = signRefreshToken(payload);
+    const refreshToken = await signRefreshToken(payload);
 
     res.cookie("accessToken", accessToken, {
       httpOnly: true,

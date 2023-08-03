@@ -1,7 +1,7 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../../config.env") });
 const jwt = require("jsonwebtoken");
-const { pool } = require("../../config/db");
+const { pool, redisClient } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 const { regenTokens } = require("../../utils/token");
 
@@ -18,6 +18,10 @@ const veriftJwt = async (req, res) => {
   try {
     if (!accessToken) {
       const { id, name } = await regenTokens(req, res, refreshToken);
+      const cacheToken = await redisClient.get(id);
+      if (refreshToken !== cacheToken) {
+        return Err(req, res, "Unauthorized token", 401)
+      }
       return res.send({
         status: "ok",
         message: "User verified",

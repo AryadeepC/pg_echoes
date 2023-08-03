@@ -2,13 +2,13 @@ const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "../config.env") });
 const jwt = require("jsonwebtoken");
 const { Err } = require("../utils/ErrorResponse");
-const { pool } = require("../config/db");
+const { pool, redisClient } = require("../config/db");
 
 const authorize = async (req, res, next) => {
   const { accessToken, refreshToken } = req.cookies;
   console.log("🍘 Present?", !!accessToken, !!refreshToken);
   console.log(req.cookies);
-  
+
   if (!accessToken && !refreshToken) {
     console.log("token not found,🍘", req.cookies);
     return res.send({ user: "Anonymous", invalid: true });
@@ -17,6 +17,10 @@ const authorize = async (req, res, next) => {
   try {
     if (!accessToken) {
       const { id, name } = await regenTokens(req, res, refreshToken);
+      const cacheToken = await redisClient.get(id);
+      if (refreshToken !== cacheToken) {
+        return Err(req, res, "Unauthorized token", 401)
+      }
       req.userId = id
       req.userName = name
       next();
