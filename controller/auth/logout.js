@@ -1,5 +1,10 @@
 const logoutController = async (req, res) => {
-  res.cookie("userToken", "", {
+  res.cookie("accessToken", "", {
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
+  res.cookie("refreshToken", "", {
     httpOnly: true,
     sameSite: "none",
     secure: true,

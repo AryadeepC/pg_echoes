@@ -3,14 +3,30 @@ require("dotenv").config({ path: path.join(__dirname, "../../config.env") });
 const jwt = require("jsonwebtoken");
 const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
+const { regenTokens } = require("../../utils/token");
 
 const veriftJwt = async (req, res) => {
-  const { userToken } = req.cookies;
-  console.log("🍘 Present?", !!userToken);
-  if (!userToken) return res.send({ user: "Anonymous", invalid: true });
+  const { accessToken, refreshToken } = req.cookies;
+  console.log("🍘 Present?", !!accessToken, !!refreshToken);
+
+  if (!accessToken && !refreshToken) {
+    console.log("token not found,🍘", req.cookies);
+    return res.send({ user: "Anonymous", invalid: true });
+  }
+
 
   try {
-    const decoded = jwt.verify(userToken, process.env.JWT_SECRET);
+    if (!accessToken) {
+      const { id, name } = await regenTokens(req, res, refreshToken);
+      return res.send({
+        status: "ok",
+        message: "User verified",
+        username: name,
+        userid: id,
+      });
+    }
+    
+    const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
     console.log("USER=", decoded.name);
 
     if (decoded.id) {
