@@ -12,6 +12,9 @@ appRouter.get("/", (req, res) => {
   // res.send("You're HOME");
 });
 
+appRouter.get('/ip', (request, response) => response.send(request.ip))
+
+
 appRouter.get("/demo", demoLimit, (req, res) => {
   console.log("demo route");
   res.send("demo page");

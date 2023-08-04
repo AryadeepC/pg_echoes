@@ -19,17 +19,19 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.set("view engine", "ejs");
+app.set('trust proxy', 1)
 app.use("/", router);
+
+
 poolAlive();
 redisStat();
 initializeApp(firebaseConfig);
 
-
+// cron jobs
 const pokeCacheAndDB = schedule.scheduleJob('* 30 2 * * *', async () => {
   try {
     await redisClient.set("creator", "arc")
     const tiempo = await pool.query('SELECT NOW()');
-    // console.log(await redisClient.get("creator"))
     console.log("".padStart(10), await redisClient.get("creator"), " | ", tiempo.rowCount ? tiempo.rows[0].now : "nil")
   } catch (error) {
     console.error("poke", error.message)
