@@ -6,7 +6,6 @@ const jwt = require("jsonwebtoken");
 const { Err } = require("../../utils/ErrorResponse");
 const sanitizeHtml = require('sanitize-html')
 const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage")
-const crypto = require('crypto')
 
 const create = async (req, res) => {
   const storage = getStorage();
