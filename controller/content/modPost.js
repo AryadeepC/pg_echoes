@@ -2,6 +2,7 @@ const { pool } = require("../../config/db");
 const { Err } = require("../../utils/ErrorResponse");
 const { getStorage, ref, getDownloadURL, uploadBytesResumable, deleteObject } = require("firebase/storage")
 const sanitizeHtml = require('sanitize-html')
+const crypto = require('crypto')
 
 const addView = async (req, res) => {
   const postId = req.params.id;
@@ -37,7 +38,8 @@ const updPosts = async (req, res) => {
     }
 
     if (req.file) {
-      const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
+      const filler = crypto.randomBytes(8).toString('hex');
+      const storageRef = ref(storage, `uploads/${String(Date.now()) + filler}`)
       const metadata = {
         contentType: req.file.mimetype,
       }

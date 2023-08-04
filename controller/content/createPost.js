@@ -6,6 +6,7 @@ const jwt = require("jsonwebtoken");
 const { Err } = require("../../utils/ErrorResponse");
 const sanitizeHtml = require('sanitize-html')
 const { getStorage, ref, getDownloadURL, uploadBytesResumable } = require("firebase/storage")
+const crypto = require('crypto')
 
 const create = async (req, res) => {
   const storage = getStorage();
@@ -22,14 +23,15 @@ const create = async (req, res) => {
     }
 
     if (req.file) {
-      const storageRef = ref(storage, `uploads/${String(Date.now()) + req.file.originalname}`)
+      const filler = crypto.randomBytes(8).toString('hex');
+      const storageRef = ref(storage, `uploads/${String(Date.now()) + filler}`)
       const metadata = {
         contentType: req.file.mimetype,
       }
       const snapshot = await uploadBytesResumable(storageRef, req.file.buffer, metadata)
       cover = await getDownloadURL(snapshot.ref)
       console.log("cover=", cover);
-      
+
     }
 
     // const cleanBody = sanitizeHtml(body, {
