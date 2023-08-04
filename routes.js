@@ -13,6 +13,7 @@ appRouter.get("/", (req, res) => {
 });
 
 appRouter.get('/ip', (request, response) => response.send(request.ip))
+appRouter.get('/xff', (request, response) => response.send(request.headers['x-forwarded-for']))
 
 
 appRouter.get("/demo", demoLimit, (req, res) => {
