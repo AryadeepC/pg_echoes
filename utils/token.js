@@ -42,17 +42,8 @@ const regenTokens = async (req, res, refreshToken) => {
     const accToken = signAccessToken(payload);
     const refToken = await signRefreshToken(payload);
 
-    res.cookie("accessToken", accToken, {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-    });
-    res.cookie("refreshToken", refToken, {
-        httpOnly: true,
-        sameSite: "none",
-        secure: true,
-    });
-    return payload;
+
+    return { ...payload, at: accToken, rt: refToken };
 }
 
 

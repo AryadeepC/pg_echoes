@@ -15,11 +15,12 @@ const { authLimit, fetchLimit } = require("../utils/rateLimit");
 router.get("/", veriftJwt);
 router.get("/posts", fetchLimit, authorize, getUserPosts);
 router.get("/profile/:id", authorize, profilePage);
-router.get("/logout", logoutController);
 router.get("/forgot", authorize, forgotPassword);
 
 router.post("/login", authLimit, loginController);
 router.post("/register", authLimit, registerController);
 router.post("/reset", authorize, resetPassword);
+
+router.delete("/logout", logoutController);
 
 module.exports = router;

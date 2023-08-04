@@ -23,8 +23,6 @@ redisStat();
 initializeApp(firebaseConfig);
 
 
-
-
 const dbJob = schedule.scheduleJob('* 59 23 * * *', async () => {
   dbDump();
   // dbJob.cancel();

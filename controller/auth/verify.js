@@ -14,14 +14,25 @@ const veriftJwt = async (req, res) => {
     return res.send({ user: "Anonymous", invalid: true });
   }
 
-
   try {
     if (!accessToken) {
-      const { id, name } = await regenTokens(req, res, refreshToken);
+      const { id, name, at, rt } = await regenTokens(req, res, refreshToken);
       const cacheToken = await redisClient.get(id);
       if (refreshToken !== cacheToken) {
         return Err(req, res, "Unauthorized token", 401)
       }
+
+      res.cookie("accessToken", at, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      });
+      res.cookie("refreshToken", rt, {
+        httpOnly: true,
+        sameSite: "none",
+        secure: true,
+      });
+
       return res.send({
         status: "ok",
         message: "User verified",
@@ -29,7 +40,7 @@ const veriftJwt = async (req, res) => {
         userid: id,
       });
     }
-    
+
     const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
     console.log("USER=", decoded.name);
 
