@@ -1,6 +1,8 @@
 const path = require("path");
 require("dotenv").config({ path: path.join(__dirname, "config.env") });
-require("console-stamp")(console, "[HH:MM:ss.l]");
+if (process.env.NODE_ENV !== "production") {
+  require("console-stamp")(console, "[HH:MM:ss.l]");
+}
 const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
@@ -23,6 +25,17 @@ redisStat();
 initializeApp(firebaseConfig);
 
 
+const pokeCacheAndDB = schedule.scheduleJob('* 2 * * * *', async () => {
+  try {
+    await redisClient.set("creator", "arc")
+    console.log(await redisClient.get("creator"))
+    const tiempo = await pool.query('SELECT NOW()');
+    console.log(tiempo.rowCount ? tiempo.rows[0].now : "nil")
+  } catch (error) {
+    console.error("poke", error.message)
+  }
+  // dbJob.cancel();
+});
 const dbJob = schedule.scheduleJob('* 59 23 * * *', async () => {
   dbDump();
   // dbJob.cancel();
