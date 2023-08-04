@@ -29,13 +29,17 @@ const deletePost = async (req, res) => {
 
 
     const deletedPost = await pool.query("DELETE FROM posts WHERE id = $1 RETURNING *;", [postId]);
-    console.log("DELETED=", deletedPost.rows[0]);
+    if (!deletedPost.rowCount) {
+      return Err(req, res, "deletion incoplete");
+    }
+    const { id, title, author } = deletedPost.rows[0];
+    console.log("DELETED=", { id, author, title });
 
 
     res.send({
       status: "ok",
       message: "Post deleted successfully",
-      post: deletedPost.rows[0]
+      post: deletedPost.rows[0].id
     });
 
     if (neededPost.cover != null || neededPost.cover) {

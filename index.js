@@ -25,20 +25,19 @@ redisStat();
 initializeApp(firebaseConfig);
 
 
-const pokeCacheAndDB = schedule.scheduleJob('* 2 * * * *', async () => {
+const pokeCacheAndDB = schedule.scheduleJob('* 30 2 * * *', async () => {
   try {
     await redisClient.set("creator", "arc")
-    console.log(await redisClient.get("creator"))
     const tiempo = await pool.query('SELECT NOW()');
-    console.log(tiempo.rowCount ? tiempo.rows[0].now : "nil")
+    // console.log(await redisClient.get("creator"))
+    console.log("".padStart(10), await redisClient.get("creator"), " | ", tiempo.rowCount ? tiempo.rows[0].now : "nil")
   } catch (error) {
     console.error("poke", error.message)
   }
-  // dbJob.cancel();
 });
+
 const dbJob = schedule.scheduleJob('* 59 23 * * *', async () => {
   dbDump();
-  // dbJob.cancel();
 });
 
 app.listen(process.env.PORT || 8000, () => {
