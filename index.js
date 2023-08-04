@@ -19,7 +19,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.set("view engine", "ejs");
-app.set('trust proxy', 2)
+app.set('trust proxy', 3)
 app.use("/", router);
 
 
