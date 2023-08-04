@@ -41,19 +41,19 @@ const deletePost = async (req, res) => {
       message: "Post deleted successfully",
       post: deletedPost.rows[0].id
     });
-
-    if (neededPost.cover != null || neededPost.cover) {
-      var withoutTokenUrl = neededPost.cover.split('?');
-      var pathUrl = withoutTokenUrl[0].split('/');
-      var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
-
-      const imgRef = ref(storage, filePath);
-      const deletedImg = await deleteObject(imgRef);
-      console.log("img deleted", deletedImg);
-    }
-    return
   } catch (err) {
     return Err(req, res, err.message);
   }
+
+  if (neededPost.cover != null || neededPost.cover) {
+    var withoutTokenUrl = neededPost.cover.split('?');
+    var pathUrl = withoutTokenUrl[0].split('/');
+    var filePath = pathUrl[pathUrl.length - 1].replace("%2F", "/");
+
+    const imgRef = ref(storage, filePath);
+    const deletedImg = await deleteObject(imgRef);
+    console.log("img deleted", deletedImg);
+  }
+  return;
 };
 module.exports = { deletePost };
