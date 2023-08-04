@@ -8,11 +8,12 @@ const { ref, getStorage, deleteObject } = require("firebase/storage")
 
 const deletePost = async (req, res) => {
   // var storage = firebase.storage();
+  let neededPost = {}
   const storage = getStorage();
 
   const postId = req.params.id;
   try {
-    let neededPost = await pool.query('SELECT * FROM posts WHERE id = $1', [postId])
+    neededPost = await pool.query('SELECT * FROM posts WHERE id = $1', [postId])
 
     if (!neededPost.rowCount) {
       return Err(req, res, "Post does not exist");
