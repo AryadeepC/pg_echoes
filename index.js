@@ -19,7 +19,6 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.set("view engine", "ejs");
-app.enable('trust proxy', true);
 app.use("/", router);
 poolAlive();
 redisStat();
