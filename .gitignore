@@ -4,6 +4,7 @@ old_config.env
 utils/trial.js
 utils/test.js
 posts.sql
+db.sql
 
 client/logs
 client/*.log
