@@ -8,8 +8,7 @@ Echoes is a simple and elegant blog application built using React, Express.js, P
 - **Full-Text Search**: Echoes leverages PostgreSQL's intrinsic ts_vectors and ts_rank to provide precise and efficient full-text search capabilities.
 - **Content Creation**:  Echoes streamlines content creation and editing with React Quill, making it easy for bloggers to craft and format their posts.
 - **Responsive Design**: A responsive user interface for seamless browsing on various devices.
-- **Database Integration**: PostgreSQL and Redis are used as primary database and token-blacklisting services.
-
+- **Database Integration**: PostgreSQL and Redis are used as primary database and token-blacklisting services. PostgreSQL is set up to regularly create backups of both the schema and data in the form of database dumps at specific time intervals.
 
 ## Contributing
 
