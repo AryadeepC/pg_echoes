@@ -84,13 +84,4 @@ INSERT INTO
         createdAt,
         updatedAt
     )
-VALUES (
-        'Arya',
-        1,
-        'ila be winnieng',
-        'whodunnit',
-        'Mr Blanc or Monsieur Poirot',
-        'that''s what she said',
-        '2023-07-06T08:01:28.943Z',
-        '2023-07-06T08:01:28.943Z'
-    );
+VALUES ();
